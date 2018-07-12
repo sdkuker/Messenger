@@ -20,6 +20,7 @@ class Footer extends React.Component {
                         defaultValue={this.defaultMessage}
                         onBlur={this.messageLeft}
                         onFocus={this.messageEntered}
+                        onKeyUp={this.enterClicked}
                         className="form-control"
                     />
                 </div>
@@ -33,6 +34,13 @@ class Footer extends React.Component {
 
     messageEntered(event: React.FormEvent<HTMLInputElement>) {
         console.log('I just got here');
+    }
+
+    enterClicked(event: React.KeyboardEvent<HTMLInputElement>) {
+        if (event.keyCode === 13) {
+            console.log('Enter was clicked');
+        }
+        
     }
 }
 

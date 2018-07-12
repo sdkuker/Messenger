@@ -5,6 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './sticky-footer-navbar.css';
 
 ReactDOM.render(
   <App />,

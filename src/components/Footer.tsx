@@ -1,12 +1,38 @@
 import * as React from 'react';
 
 class Footer extends React.Component {
+
+    defaultMessage = 'Your Message';
+
+    constructor() {
+        super({});
+        this.messageLeft = this.messageLeft.bind(this);
+        this.messageEntered = this.messageEntered.bind(this);
+    }
+
     public render() {
         return (
-            <div className="form-group">
-                <textarea className="form-control" rows={1} id="message"></textarea>
-            </div>
+            <footer className="footer">
+             <div className="form-group">
+                    <input
+                        type="text"
+                        name="myInput"
+                        defaultValue={this.defaultMessage}
+                        onBlur={this.messageLeft}
+                        onFocus={this.messageEntered}
+                        className="form-control"
+                    />
+                </div>
+            </footer>
         );
+    }
+
+    messageLeft(event: React.FormEvent<HTMLInputElement>) {
+        console.log('I just left');
+    }
+
+    messageEntered(event: React.FormEvent<HTMLInputElement>) {
+        console.log('I just got here');
     }
 }
 

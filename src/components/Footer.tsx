@@ -8,6 +8,7 @@ class Footer extends React.Component {
         super({});
         this.messageLeft = this.messageLeft.bind(this);
         this.messageEntered = this.messageEntered.bind(this);
+        this.enterClicked = this.enterClicked.bind(this);
     }
 
     public render() {
@@ -28,17 +29,26 @@ class Footer extends React.Component {
         );
     }
 
+    /*
+    * don't do anything when they tab out
+    */ 
     messageLeft(event: React.FormEvent<HTMLInputElement>) {
-        console.log('I just left');
+        console.log('I just left and the contents was: ' + event.currentTarget.value);
     }
 
     messageEntered(event: React.FormEvent<HTMLInputElement>) {
-        console.log('I just got here');
+        console.log('Message entered and currentTarget.value is: ' + event.currentTarget.value);
+        if (event.currentTarget.value === this.defaultMessage) {
+            event.currentTarget.value = '';
+        }
     }
 
+    /*
+    * only send the message when enter is clicked
+    */ 
     enterClicked(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.keyCode === 13) {
-            console.log('Enter was clicked');
+            console.log('Enter was clicked and contents was: ' + event.currentTarget.value);
         }
         
     }

@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Message } from '../domain/Message';
 import   MessageComponent  from './MessageComponent';
+import { observer } from 'mobx-react';
 
 interface PropValues {
     messages: Array<Message>;
 }
 
+@observer
 class MessageList extends React.Component<PropValues, {}> {
 
     constructor(props: PropValues) {

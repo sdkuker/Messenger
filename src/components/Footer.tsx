@@ -1,14 +1,23 @@
 import * as React from 'react';
+import { MessageWarehouse } from '../domain/MessageWarehouse';
+import { Message } from '../domain/Message';
 
-class Footer extends React.Component {
+interface PropValues {
+    messageWarehouse: MessageWarehouse;
+}
+
+class Footer extends React.Component<PropValues, {}> {
 
     defaultMessage = 'Your Message';
+     // tslint:disable-next-line
+    inputTextRef: any;
 
-    constructor() {
-        super({});
+    constructor(props: PropValues) {
+        super(props);
         this.messageLeft = this.messageLeft.bind(this);
         this.messageEntered = this.messageEntered.bind(this);
         this.enterClicked = this.enterClicked.bind(this);
+        this.inputTextRef = React.createRef();
     }
 
     public render() {
@@ -24,6 +33,7 @@ class Footer extends React.Component {
                             onFocus={this.messageEntered}
                             onKeyUp={this.enterClicked}
                             className="form-control"
+                            ref={this.inputTextRef}
                         />
                     </div>
                 </div>
@@ -50,9 +60,14 @@ class Footer extends React.Component {
     */
     enterClicked(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.keyCode === 13) {
-            console.log('Enter was clicked and contents was: ' + event.currentTarget.value);
+            if (event.currentTarget.value) {
+                if (event.currentTarget.value !== this.defaultMessage) {
+                    const myMessage = new Message('Steve', event.currentTarget.value);
+                    this.props.messageWarehouse.add(myMessage);
+                    this.inputTextRef.current.value = '';
+                }
+            }
         }
-
     }
 }
 

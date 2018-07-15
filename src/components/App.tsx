@@ -23,8 +23,8 @@ class App extends React.Component {
     return (
         <div>
           <Nav />
-          <MessageList messages={this.myMessages}/>
-          <Footer />
+          <MessageList messages={this.myMessageWarehouse.messages}/>
+          <Footer messageWarehouse={this.myMessageWarehouse}/>
         </div>
     );
   }

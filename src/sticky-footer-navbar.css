@@ -35,3 +35,7 @@ html {
   code {
     font-size: 80%;
   }
+
+  .special-container {
+    padding: 60px 15px 0;
+  }

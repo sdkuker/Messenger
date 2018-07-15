@@ -15,4 +15,7 @@ export class MessageWarehouse {
         return this.dataProvider.messages;
     }
     
+    add = (aMessage: Message) => {
+        this.dataProvider.add(aMessage);
+    }
 }

@@ -3,21 +3,21 @@ import * as React from 'react';
 class MessageList extends React.Component {
     public render() {
         return (
-            <main role="main" className="container">
-            <div className="pre-scrollable">
-                <ul>
-                    <li><span>first</span></li>
-                    <li><span>second</span></li>
-                    <li><span>third</span></li>
-                    <li><span>fourth</span></li>
-                    <li><span>fifth</span></li>
-                    <li><span>sixth</span></li>
-                    <li><span>seventh</span></li>
-                    <li><span>eighth</span></li>
-                    <li><span>ninth</span></li>
-                </ul>
-            </div>
-            </main>
+            <div  className="special-container">
+                
+                    <ul className="list-group">
+                        <li className="list-group-item"><span>first</span></li>
+                        <li className="list-group-item"><span>second</span></li>
+                        <li className="list-group-item"><span>third</span></li>
+                        <li className="list-group-item"><span>fourth</span></li>
+                        <li className="list-group-item"><span>fifth</span></li>
+                        <li className="list-group-item"><span>sixth</span></li>
+                        <li className="list-group-item"><span>seventh</span></li>
+                        <li className="list-group-item"><span>eighth</span></li>
+                       
+                    </ul>
+                </div>
+            
         );
     }
 }

@@ -6,7 +6,7 @@ import Nav from './Nav';
 class App extends React.Component {
   public render() {
     return (
-        <div className="container">
+        <div>
           <Nav />
           <MessageList />
           <Footer />

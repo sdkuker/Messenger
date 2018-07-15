@@ -1,23 +1,32 @@
 import * as React from 'react';
+import { Message } from '../domain/Message';
+import   MessageComponent  from './MessageComponent';
 
-class MessageList extends React.Component {
+interface PropValues {
+    messages: Array<Message>;
+}
+
+class MessageList extends React.Component<PropValues, {}> {
+
+    constructor(props: PropValues) {
+        super(props);
+    }
+
     public render() {
+
+        // tslint:disable-next-line
+        let messageComponents: any = [];
+        this.props.messages.forEach((aMessage: Message) => {
+            messageComponents.push(
+                <MessageComponent message={aMessage} />
+            );
+        });
         return (
-            <div  className="special-container">
-                
-                    <ul className="list-group">
-                        <li className="list-group-item"><span>first</span></li>
-                        <li className="list-group-item"><span>second</span></li>
-                        <li className="list-group-item"><span>third</span></li>
-                        <li className="list-group-item"><span>fourth</span></li>
-                        <li className="list-group-item"><span>fifth</span></li>
-                        <li className="list-group-item"><span>sixth</span></li>
-                        <li className="list-group-item"><span>seventh</span></li>
-                        <li className="list-group-item"><span>eighth</span></li>
-                       
-                    </ul>
-                </div>
-            
+            <div className="special-container">
+                <ul className="list-group">
+                    {messageComponents}
+                </ul>
+            </div>
         );
     }
 }

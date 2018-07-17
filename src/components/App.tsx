@@ -1,6 +1,8 @@
 import * as React from 'react';
+import * as Firebase from 'firebase';
 import Footer from './Footer';
 import { Message } from '../domain/Message';
+import { FirebaseMessageDataProvider } from '../domain/FirebaseMessageDataProvider';
 import { StaticMessageDataProvider } from '../domain/StaticMessageDataProvider';
 import MessageList from './MessageList';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
@@ -15,17 +17,18 @@ class App extends React.Component {
 
   constructor() {
     super({});
-    this.myMessageWarehouse = new MessageWarehouse(new StaticMessageDataProvider(null));
+    //  this.myMessageWarehouse = new MessageWarehouse(new StaticMessageDataProvider(null));
+    this.myMessageWarehouse = new MessageWarehouse(new FirebaseMessageDataProvider('steve'));
     this.myMessages = this.myMessageWarehouse.messages;
   }
 
   public render() {
     return (
-        <div>
-          <Nav />
-          <MessageList messages={this.myMessageWarehouse.messages}/>
-          <Footer messageWarehouse={this.myMessageWarehouse}/>
-        </div>
+      <div>
+        <Nav />
+        <MessageList messages={this.myMessageWarehouse.messages} />
+        <Footer messageWarehouse={this.myMessageWarehouse} />
+      </div>
     );
   }
 }

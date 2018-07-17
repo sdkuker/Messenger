@@ -30,5 +30,5 @@ it('Add a message and see if its observable', () => {
         expect(change.object[2].text).toEqual('hi');
 
     });
-    myDataProvider.add(new Message('george', 'hi'));
+    myDataProvider.add(new Message('4', 'george', 'hi'));
 });

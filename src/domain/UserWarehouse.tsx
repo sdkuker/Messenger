@@ -13,7 +13,11 @@ export class UserWarehouse {
 
     @computed
     get users() {
-        return this.dataProvider.users;
+        if (this.loggedInUser) {
+            return this.dataProvider.getUsersForUserOfCategory(this.loggedInUser);
+        } else {
+            return this.dataProvider.users;
+        }
     }
 
     setLoggedInUser( userName: string, userPassword: string ) {
@@ -31,6 +35,14 @@ export class UserWarehouse {
         });
 
         return successfulLogin;
+    }
+
+    getUsersForLoggedInUser() {
+        if (this.loggedInUser) {
+            return this.dataProvider.getUsersForUserOfCategory(this.loggedInUser);
+        } else {
+            return new Array<User>();
+        }
     }
     
 }

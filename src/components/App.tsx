@@ -33,11 +33,11 @@ class App extends React.Component {
     let myHtml: any = [];
 
     if (this.myUserWarehouse.loggedInUser) {
-      myHtml.push( <Nav  loggedInUser={this.myUserWarehouse.loggedInUser}/>);
+      myHtml.push( <Nav  userWarehouse={this.myUserWarehouse}/>);
       myHtml.push(<MessageList messages={this.myMessageWarehouse.messages} />);
       myHtml.push(<Footer messageWarehouse={this.myMessageWarehouse} />);
     } else {
-      myHtml.push( <Nav loggedInUser={null}/>);
+      myHtml.push( <Nav userWarehouse={this.myUserWarehouse}/>);
       myHtml.push( <LoginComponent userWarehouse={this.myUserWarehouse}/> );
     }
     return (

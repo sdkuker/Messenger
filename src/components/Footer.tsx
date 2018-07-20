@@ -45,11 +45,11 @@ class Footer extends React.Component<PropValues, {}> {
     * don't do anything when they tab out
     */
     messageLeft(event: React.FormEvent<HTMLInputElement>) {
-        console.log('I just left and the contents was: ' + event.currentTarget.value);
+        // console.log('I just left and the contents was: ' + event.currentTarget.value);
     }
 
     messageEntered(event: React.FormEvent<HTMLInputElement>) {
-        console.log('Message entered and currentTarget.value is: ' + event.currentTarget.value);
+        // console.log('Message entered and currentTarget.value is: ' + event.currentTarget.value);
         if (event.currentTarget.value === this.defaultMessage) {
             event.currentTarget.value = '';
         }

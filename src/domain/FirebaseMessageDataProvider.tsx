@@ -16,7 +16,6 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
     }
     add = (aMessage: Message) => {
         const newPostRef = this.reference.push();
-        console.log('new post ref is: ' + newPostRef);
         // tslint:disable-next-line
         newPostRef.set({sender: aMessage.sender, text: aMessage.text}, function(error: any) {
             if (error) {
@@ -29,8 +28,6 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
 
     // tslint:disable-next-line
     messageAddedToDatabase = (data: any) => {
-        console.log('message added to the database: key: ' + data.key + ' sender: ' + 
-            data.val().sender + ' text: ' + data.val().text);
         this.messages.push(new Message(data.key, data.val().sender, data.val().text));
     }
 }

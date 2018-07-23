@@ -1,5 +1,6 @@
 import { MessageDataProvider } from './MessageDataProvider';
 import { Message } from './Message';
+import { Conversation } from './Conversation';
 import { observable } from 'mobx';
 
 export class StaticMessageDataProvider implements MessageDataProvider {
@@ -18,5 +19,9 @@ export class StaticMessageDataProvider implements MessageDataProvider {
     }
     add = (aMessage: Message) => {
         this.messages.push(aMessage);
+    }
+
+    setConversation = (aConversation: Conversation) => {
+        console.log('not sure what to do here');
     }
 }

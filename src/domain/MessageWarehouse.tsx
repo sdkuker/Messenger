@@ -1,4 +1,5 @@
 import { Message } from './Message';
+import { Conversation } from './Conversation';
 import { MessageDataProvider } from './MessageDataProvider';
 import { computed } from 'mobx';
 
@@ -18,4 +19,9 @@ export class MessageWarehouse {
     add = (aMessage: Message) => {
         this.dataProvider.add(aMessage);
     }
+
+    conversationPartnerChanged = (aConversation: Conversation) => { 
+        this.dataProvider.setConversation(aConversation);
+    }
+
 }

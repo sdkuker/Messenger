@@ -16,15 +16,14 @@ import { UserWarehouse } from '../domain/UserWarehouse';
 class App extends React.Component {
 
   myMessageWarehouse: MessageWarehouse;
-  myMessages: Array<Message>;
   myUserWarehouse: UserWarehouse;
 
   constructor() {
     super({});
     this.myUserWarehouse = new UserWarehouse(new StaticUserDataProvider(null));
-    this.myMessageWarehouse = new MessageWarehouse(new StaticMessageDataProvider(null));
-    // this.myMessageWarehouse = new MessageWarehouse(new FirebaseMessageDataProvider('steve'));
-    this.myMessages = this.myMessageWarehouse.messages;
+    // this.myMessageWarehouse = new MessageWarehouse(new StaticMessageDataProvider(null));
+    this.myMessageWarehouse =
+      new MessageWarehouse(new FirebaseMessageDataProvider('messages/'));
   }
 
   public render() {
@@ -33,18 +32,34 @@ class App extends React.Component {
     let myHtml: any = [];
 
     if (this.myUserWarehouse.loggedInUser) {
-      myHtml.push( <Nav  userWarehouse={this.myUserWarehouse}/>);
+      myHtml.push((
+              <Nav 
+                userWarehouse={this.myUserWarehouse}
+                conversationPartnerChanged={this.conversationPartnerChanged} 
+              />));
       myHtml.push(<MessageList messages={this.myMessageWarehouse.messages} />);
-      myHtml.push(<Footer messageWarehouse={this.myMessageWarehouse} />);
+      myHtml.push((
+              <Footer 
+                messageWarehouse={this.myMessageWarehouse} 
+                loggedInUser={this.myUserWarehouse.loggedInUser}
+              />));
     } else {
-      myHtml.push( <Nav userWarehouse={this.myUserWarehouse}/>);
-      myHtml.push( <LoginComponent userWarehouse={this.myUserWarehouse}/> );
+      myHtml.push((
+            <Nav 
+              userWarehouse={this.myUserWarehouse} 
+              conversationPartnerChanged={this.conversationPartnerChanged} 
+            />));
+      myHtml.push(<LoginComponent userWarehouse={this.myUserWarehouse} />);
     }
     return (
       <div>
         {myHtml}
       </div>
     );
+  }
+
+  conversationPartnerChanged = () => {
+    this.myMessageWarehouse.conversationPartnerChanged(this.myUserWarehouse.conversation);
   }
 }
 

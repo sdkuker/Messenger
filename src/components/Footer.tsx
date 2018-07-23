@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
 import { Message } from '../domain/Message';
+import { User } from '../domain/User';
 
 interface PropValues {
     messageWarehouse: MessageWarehouse;
+    loggedInUser: User;
 }
 
 class Footer extends React.Component<PropValues, {}> {
@@ -62,7 +64,7 @@ class Footer extends React.Component<PropValues, {}> {
         if (event.keyCode === 13) {
             if (event.currentTarget.value) {
                 if (event.currentTarget.value !== this.defaultMessage) {
-                    const myMessage = new Message('1', 'Steve', event.currentTarget.value);
+                    const myMessage = new Message('1', this.props.loggedInUser.name, event.currentTarget.value);
                     this.props.messageWarehouse.add(myMessage);
                     this.inputTextRef.current.value = '';
                 }

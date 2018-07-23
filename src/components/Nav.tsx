@@ -4,6 +4,7 @@ import { UserWarehouse } from '../domain/UserWarehouse';
 
 interface PropValues {
   userWarehouse: UserWarehouse;
+  conversationPartnerChanged: Function;
 }
 
 class Nav extends React.Component<PropValues, {}> {
@@ -28,6 +29,10 @@ class Nav extends React.Component<PropValues, {}> {
       loggedInUserElements.push(<div style={whiteFontStyle}>{myString}</div>);
       this.props.userWarehouse.getUsersForLoggedInUser().forEach((myUser: User) => {
         partnerElements.push(<option>{myUser.name}</option>);
+        if (this.props.userWarehouse.getUsersForLoggedInUser().length === 1) {
+          this.props.userWarehouse.setConversationPartner(myUser.name);
+          this.props.conversationPartnerChanged();
+        }
       });
     }
 
@@ -43,7 +48,8 @@ class Nav extends React.Component<PropValues, {}> {
   }
 
   partnerSelected(event: React.FormEvent<HTMLSelectElement>) {
-    let myValue: string = event.currentTarget.value;
+    this.props.userWarehouse.setConversationPartner(event.currentTarget.value);
+    this.props.conversationPartnerChanged();
   }
 }
 

@@ -13,8 +13,9 @@ export class StaticUserDataProvider implements UserDataProvider {
             const staticUsers = Array<User>();
             staticUsers.push(new User('1', 'Steve', 'password', '1'));
             staticUsers.push(new User('2', 'Michelle', 'password', '1'));
-            staticUsers.push(new User('3', 'Category 2 User 1', 'password', '2'));
-            staticUsers.push(new User('4', 'Category 2 User 2', 'password', '2'));
+            staticUsers.push(new User('3', 'Beth', 'password', '1'));
+            staticUsers.push(new User('4', 'Category 2 User 1', 'password', '2'));
+            staticUsers.push(new User('5', 'Category 2 User 2', 'password', '2'));
             this.users = staticUsers;
         }
     }

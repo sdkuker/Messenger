@@ -30,6 +30,7 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
 
     setConversation = (aConversation: Conversation) => {
         this.conversation = aConversation;
+        this.messages.length = 0;
         this.reference = this.database.ref(this.basePath + aConversation.key());
         this.reference.on('child_added', this.messageAddedToDatabase);
     }

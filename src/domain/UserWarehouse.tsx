@@ -4,7 +4,7 @@ import { computed, observable } from 'mobx';
 import { Conversation } from './Conversation';
 
 export class UserWarehouse {
-   
+
     dataProvider: UserDataProvider;
     @observable loggedInUser: User;
     @observable partnerUser: User;
@@ -23,7 +23,7 @@ export class UserWarehouse {
         }
     }
 
-    setLoggedInUser = ( userName: string, userPassword: string ) => {
+    setLoggedInUser = (userName: string, userPassword: string) => {
         // loop through the users collection and find one with the same name
         // if you do, take the one from the collection and make it loggedInUser. 
         // you want to use the same object with the id from the data provider.
@@ -31,7 +31,7 @@ export class UserWarehouse {
         let successfulLogin = false;
 
         this.users.forEach((myUser: User) => {
-            if (userName === myUser.name && userPassword === myUser.password ) {
+            if (userName === myUser.name && userPassword === myUser.password) {
                 this.loggedInUser = myUser;
                 successfulLogin = true;
             }
@@ -48,11 +48,15 @@ export class UserWarehouse {
         }
     }
 
-    setConversationPartner = (partnerName: string ) => {
+    setConversationPartner = (partnerName: string) => {
         this.users.forEach((myUser: User) => {
-            if (partnerName === myUser.name ) {
+            if (partnerName === myUser.name) {
                 this.partnerUser = myUser;
-                this.conversation = new Conversation(this.loggedInUser, this.partnerUser);
+                if (this.conversation) {
+                    this.conversation.participantTwo = this.partnerUser;
+                } else {
+                    this.conversation = new Conversation(this.loggedInUser, this.partnerUser);
+                }
             }
         });
     }

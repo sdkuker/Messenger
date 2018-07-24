@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Footer from './Footer';
-import { Message } from '../domain/Message';
+import { FirebaseUserDataProvider } from '../domain/FirebaseUserDataProvider';
 import { FirebaseMessageDataProvider } from '../domain/FirebaseMessageDataProvider';
 import { StaticMessageDataProvider } from '../domain/StaticMessageDataProvider';
 import LoginComponent from './LoginComponent';
@@ -9,7 +9,6 @@ import { MessageWarehouse } from '../domain/MessageWarehouse';
 import Nav from './Nav';
 import { observer } from 'mobx-react';
 import { StaticUserDataProvider } from '../domain/StaticUserDataProvider';
-import { User } from '../domain/User';
 import { UserWarehouse } from '../domain/UserWarehouse';
 
 @observer
@@ -20,7 +19,8 @@ class App extends React.Component {
 
   constructor() {
     super({});
-    this.myUserWarehouse = new UserWarehouse(new StaticUserDataProvider(null));
+    // this.myUserWarehouse = new UserWarehouse(new StaticUserDataProvider(null));
+    this.myUserWarehouse = new UserWarehouse(new FirebaseUserDataProvider());
     // this.myMessageWarehouse = new MessageWarehouse(new StaticMessageDataProvider(null));
     this.myMessageWarehouse =
       new MessageWarehouse(new FirebaseMessageDataProvider('messages/'));
@@ -58,7 +58,8 @@ class App extends React.Component {
     );
   }
 
-  conversationPartnerChanged = () => {
+  conversationPartnerChanged = (partnerName: string) => {
+    this.myUserWarehouse.setConversationPartner(partnerName);
     this.myMessageWarehouse.conversationPartnerChanged(this.myUserWarehouse.conversation);
   }
 }

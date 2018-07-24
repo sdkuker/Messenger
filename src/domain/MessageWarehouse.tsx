@@ -1,11 +1,13 @@
 import { Message } from './Message';
 import { Conversation } from './Conversation';
 import { MessageDataProvider } from './MessageDataProvider';
-import { computed } from 'mobx';
+import { computed, observable } from 'mobx';
 
 export class MessageWarehouse {
    
     dataProvider: MessageDataProvider;
+
+    @observable myConversation: Conversation;
 
     constructor(mydataProvider: MessageDataProvider) {
         this.dataProvider = mydataProvider;
@@ -21,6 +23,7 @@ export class MessageWarehouse {
     }
 
     conversationPartnerChanged = (aConversation: Conversation) => { 
+        this.myConversation = aConversation;
         this.dataProvider.setConversation(aConversation);
     }
 

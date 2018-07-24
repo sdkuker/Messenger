@@ -4,9 +4,11 @@ export class Conversation {
     participantOne: User;
     participantTwo: User;
 
-    constructor(firstParticipant: User, secondParticipant: User) {
+    constructor(firstParticipant: User, secondParticipant: User | null) {
         this.participantOne = firstParticipant;
-        this.participantTwo = secondParticipant;
+        if (secondParticipant) {
+            this.participantTwo = secondParticipant;
+        }
     }
 
     key = () => {
@@ -14,6 +16,6 @@ export class Conversation {
             return this.participantOne.name + '-' + this.participantTwo.name;
         } else {
             return this.participantTwo.name + '-' + this.participantOne.name;
-        } 
+        }
     }
 }

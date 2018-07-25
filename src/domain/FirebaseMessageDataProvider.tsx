@@ -20,11 +20,11 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
         const newPostRef = this.reference.push();
         // tslint:disable-next-line
         newPostRef.set({sender: aMessage.sender, text: aMessage.text, creationDate: aMessage.creationDate}, function(error: any) {
-            if (error) {
-                console.log('the set failed');
-            } else {
-                console.log('the set succeeded');
-            }
+            // if (error) {
+            //     console.log('the set failed');
+            // } else {
+            //     console.log('the set succeeded');
+            // }
         });
     }
 

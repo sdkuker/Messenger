@@ -32,20 +32,6 @@ export class FirebaseUserDataProvider implements UserDataProvider {
 
     // tslint:disable-next-line
     userAddedFromDatabase = (data: any) => {
-        console.log('value: ' + data.val().name);
         this.users.push(new User(data.key,  data.val().name, data.val().password, data.val().category));
-        // let myUsers = snapshot.val();
-        // for (let aUser in myUsers) {
-        //     this.users.push(new User(aUser, myUsers[aUser].name, myUsers[aUser].password, myUsers[aUser].category))
-        // }
-
-        // let self = this;
-        // // tslint:disable-next-line
-        // snapshot.forEach(function(childSnapshot: any ) {
-        //     let childKey = childSnapshot.key;
-        //     let childData = childSnapshot.val();
-        //    // self.users.push(new User(childSnapshot.key, myUsers[aUser].name, 
-        //    // myUsers[aUser].password, myUsers[aUser].category))
-        // });
     }
 }

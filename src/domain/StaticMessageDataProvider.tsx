@@ -22,6 +22,6 @@ export class StaticMessageDataProvider implements MessageDataProvider {
     }
 
     setConversation = (aConversation: Conversation) => {
-        console.log('not sure what to do here');
+        // console.log('not sure what to do here');
     }
 }

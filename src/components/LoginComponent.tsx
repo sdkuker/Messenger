@@ -73,7 +73,6 @@ class LoginComponent extends React.Component<PropValues, {}> {
         if ( successfulLogin ) {
             this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
         }
-        console.log('successful login? ' + successfulLogin);
     }
 
     userNameChanged(event: React.FormEvent<HTMLInputElement>) {

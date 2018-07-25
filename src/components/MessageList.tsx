@@ -20,7 +20,7 @@ class MessageList extends React.Component<PropValues, {}> {
         let messageComponents: any = [];
         this.props.messages.forEach((aMessage: Message) => {
             messageComponents.push(
-                <MessageComponent message={aMessage} />
+                <MessageComponent message={aMessage} key={aMessage.key} />
             );
         });
         return (

@@ -11,8 +11,6 @@ interface PropValues {
 @observer
 class Nav extends React.Component<PropValues, {}> {
 
-  selectedUserName: string;
-
   constructor(props: PropValues) {
     super(props);
   }
@@ -27,6 +25,7 @@ class Nav extends React.Component<PropValues, {}> {
     let loggedInUserElements: any = [];
     // tslint:disable-next-line
     let partnerElements: any = [];
+    let selectedUserName = '';
 
     if (this.props.userWarehouse.loggedInUser) {
       let myString = this.props.userWarehouse.loggedInUser.name + ' chatting with ';
@@ -34,11 +33,9 @@ class Nav extends React.Component<PropValues, {}> {
       this.props.userWarehouse.getUsersForLoggedInUser().forEach((myUser: User) => {
         partnerElements.push(<option>{myUser.name}</option>);
       });
-      if (! this.selectedUserName) {
-        let selectedUser = this.props.userWarehouse.getUsersForLoggedInUser()[0];
-        this.selectedUserName = selectedUser.name;
-        // this.props.userWarehouse.setConversationPartner(selectedUser.name);
-        this.props.conversationPartnerChanged(selectedUser.name);
+
+      if ( this.props.userWarehouse.partnerUser ) {
+        selectedUserName = this.props.userWarehouse.partnerUser.name;
       }
     }
 
@@ -47,7 +44,7 @@ class Nav extends React.Component<PropValues, {}> {
         <span className="navbar-brand">Messenger</span>
         {loggedInUserElements}
         <select  
-            value={this.selectedUserName} 
+            value={selectedUserName} 
             className="form-control" 
             id="partnerSelect" 
             onChange={e => this.partnerSelected(e)}
@@ -59,9 +56,8 @@ class Nav extends React.Component<PropValues, {}> {
   }
 
   partnerSelected(event: React.FormEvent<HTMLSelectElement>) {
-    this.selectedUserName = event.currentTarget.value;
-   //  this.props.userWarehouse.setConversationPartner(event.currentTarget.value);
-    this.props.conversationPartnerChanged(this.selectedUserName);
+    let selectedUserName = event.currentTarget.value;
+    this.props.conversationPartnerChanged(selectedUserName);
   }
 }
 

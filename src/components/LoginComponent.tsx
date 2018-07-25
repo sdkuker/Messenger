@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { UserWarehouse } from '../domain/UserWarehouse';
+import { MessageWarehouse } from '../domain/MessageWarehouse';
 
 interface PropValues {
     userWarehouse: UserWarehouse;
+    messageWarehouse: MessageWarehouse;
 }
 
 @observer
@@ -68,6 +70,9 @@ class LoginComponent extends React.Component<PropValues, {}> {
     loginButtonClicked(event: React.FormEvent<HTMLInputElement>) {
 
         let successfulLogin = this.props.userWarehouse.setLoggedInUser(this.userName, this.password);
+        if ( successfulLogin ) {
+            this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
+        }
         console.log('successful login? ' + successfulLogin);
     }
 

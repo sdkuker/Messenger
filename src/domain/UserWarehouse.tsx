@@ -34,6 +34,13 @@ export class UserWarehouse {
             if (userName === myUser.name && userPassword === myUser.password) {
                 this.loggedInUser = myUser;
                 successfulLogin = true;
+                let myUsers = this.getUsersForLoggedInUser();
+                if (myUsers && myUsers.length > 0) {
+                    this.partnerUser = myUsers[0];
+                    this.conversation = new Conversation(this.loggedInUser, this.partnerUser);
+                } else {
+                    this.conversation = new Conversation(this.loggedInUser, null);
+                }
             }
         });
 

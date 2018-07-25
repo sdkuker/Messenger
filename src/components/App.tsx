@@ -49,7 +49,7 @@ class App extends React.Component {
               userWarehouse={this.myUserWarehouse} 
               conversationPartnerChanged={this.conversationPartnerChanged} 
             />));
-      myHtml.push(<LoginComponent userWarehouse={this.myUserWarehouse} />);
+      myHtml.push(<LoginComponent userWarehouse={this.myUserWarehouse} messageWarehouse={this.myMessageWarehouse}/>);
     }
     return (
       <div>

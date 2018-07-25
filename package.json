@@ -2,6 +2,7 @@
   "name": "messenger",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://www.stevieware.com/messenger",
   "dependencies": {
     "bootstrap": "^4.1.1",
     "firebase": "^5.2.0",

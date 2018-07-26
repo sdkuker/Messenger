@@ -42,7 +42,7 @@ class LoginComponent extends React.Component<PropValues, {}> {
                             </div>
                             <div className="form-group">
                                 <input
-                                    type="text"
+                                    type="password"
                                     name="password"
                                     id="password"
                                     className="form-control"

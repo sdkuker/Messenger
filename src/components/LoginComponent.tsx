@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Modal from 'react-modal';
 import { observer } from 'mobx-react';
 import { UserWarehouse } from '../domain/UserWarehouse';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
@@ -8,14 +9,33 @@ interface PropValues {
     messageWarehouse: MessageWarehouse;
 }
 
+interface StateValues {
+    isModalOpen: boolean;
+}
+
 @observer
-class LoginComponent extends React.Component<PropValues, {}> {
+class LoginComponent extends React.Component<PropValues, StateValues> {
 
     userName: string;
     password: string;
+    modalStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)'
+        }
+    };
+    modalTitle = 'Unable to Log In';
+    modalDescription = 'The ID or Password is Invalid';
 
     constructor(props: PropValues) {
         super(props);
+        this.state = {
+            isModalOpen : false
+        };
     }
 
     public render() {
@@ -63,6 +83,19 @@ class LoginComponent extends React.Component<PropValues, {}> {
                         </form>
                     </div>
                 </div>
+                <div>
+                    <Modal
+                        isOpen={this.state.isModalOpen}
+                        onRequestClose={this.closeModal}
+                        style={this.modalStyles}
+                        contentLabel="Example Modal"
+                        parentSelector={() => document.body}
+                    >
+                        <h2>{this.modalTitle}</h2>
+                        <div>{this.modalDescription}</div>
+                        <button onClick={this.closeModal}>close</button>
+                    </Modal>
+                </div>
             </div>
         );
     }
@@ -72,6 +105,8 @@ class LoginComponent extends React.Component<PropValues, {}> {
         let successfulLogin = this.props.userWarehouse.setLoggedInUser(this.userName, this.password);
         if ( successfulLogin ) {
             this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
+        } else {
+            this.setState({ isModalOpen: true });
         }
     }
 
@@ -81,6 +116,10 @@ class LoginComponent extends React.Component<PropValues, {}> {
 
     passwordChanged(event: React.FormEvent<HTMLInputElement>) {
         this.password = event.currentTarget.value;
+    }
+
+    closeModal = () => {
+        this.setState({ isModalOpen: false });
     }
 }
 

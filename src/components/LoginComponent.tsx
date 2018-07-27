@@ -111,11 +111,11 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
     }
 
     userNameChanged(event: React.FormEvent<HTMLInputElement>) {
-        this.userName = event.currentTarget.value;
+        this.userName = event.currentTarget.value.trim();
     }
 
     passwordChanged(event: React.FormEvent<HTMLInputElement>) {
-        this.password = event.currentTarget.value;
+        this.password = event.currentTarget.value.trim();
     }
 
     closeModal = () => {

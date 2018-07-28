@@ -16,7 +16,7 @@ interface StateValues {
 @observer
 class LoginComponent extends React.Component<PropValues, StateValues> {
 
-    userName: string;
+    userId: string;
     password: string;
     modalStyles = {
         content: {
@@ -53,11 +53,11 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
                             <div className="form-group">
                                 <input
                                     type="text"
-                                    name="userName"
-                                    id="userName"
+                                    name="userId"
+                                    id="userId"
                                     className="form-control"
-                                    placeholder="Username"
-                                    onBlur={event => this.userNameChanged(event)}
+                                    placeholder="userId"
+                                    onBlur={event => this.userIdChanged(event)}
                                 />
                             </div>
                             <div className="form-group">
@@ -103,10 +103,10 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
     loginButtonClicked = async (event: React.FormEvent<HTMLInputElement>) => {
 
         try {
-            let validID = await this.props.userWarehouse.validateLogin(this.userName, this.password);
+            let validID = await this.props.userWarehouse.validateLogin(this.userId, this.password);
             console.log('validId: ' + validID);
 
-            let successfulLogin = this.props.userWarehouse.setLoggedInUser(this.userName, this.password);
+            let successfulLogin = this.props.userWarehouse.setLoggedInUser(this.userId, this.password);
             if (successfulLogin) {
                 this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
             } else {
@@ -118,8 +118,8 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
 
     }
 
-    userNameChanged(event: React.FormEvent<HTMLInputElement>) {
-        this.userName = event.currentTarget.value.trim();
+    userIdChanged(event: React.FormEvent<HTMLInputElement>) {
+        this.userId = event.currentTarget.value.trim();
     }
 
     passwordChanged(event: React.FormEvent<HTMLInputElement>) {

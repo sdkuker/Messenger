@@ -5,10 +5,18 @@ export class User {
     password: string | null;
     category: string;
 
-    constructor(anId: string, aName: string, aPassword: string | null, aCategory: string) {
-        this.id = anId;
-        this.name = aName;
-        this.password = aPassword;
-        this.category = aCategory;
+    constructor(anId: string | null, aName: string | null, aPassword: string | null, aCategory: string | null) {
+        if (anId) {
+            this.id = anId;
+        } 
+        if (aName) {
+            this.name = aName;
+        }
+        if (aPassword) {
+            this.password = aPassword;
+        }
+        if (aCategory) {
+            this.category = aCategory;
+        }
     }
 }

@@ -23,26 +23,23 @@ export class UserWarehouse {
         }
     }
 
-    setLoggedInUser = (userName: string, userPassword: string) => {
-        // loop through the users collection and find one with the same name
-        // if you do, take the one from the collection and make it loggedInUser. 
-        // you want to use the same object with the id from the data provider.
+    setLoggedInUser = async (id: string, password: string) => {
 
         let successfulLogin = false;
 
-        this.users.forEach((myUser: User) => {
-            if (userName === myUser.name && userPassword === myUser.password) {
-                this.loggedInUser = myUser;
-                successfulLogin = true;
-                let myUsers = this.getUsersForLoggedInUser();
-                if (myUsers && myUsers.length > 0) {
-                    this.partnerUser = myUsers[0];
-                    this.conversation = new Conversation(this.loggedInUser, this.partnerUser);
-                } else {
-                    this.conversation = new Conversation(this.loggedInUser, null);
-                }
+        try {
+            successfulLogin = true;
+            this.loggedInUser = await this.dataProvider.getUserForId(id);
+            let myUsers = await this.getUsersForLoggedInUser();
+            if (myUsers && myUsers.length > 0) {
+                this.partnerUser = myUsers[0];
+                this.conversation = new Conversation(this.loggedInUser, this.partnerUser);
+            } else {
+                this.conversation = new Conversation(this.loggedInUser, null);
             }
-        });
+        } catch (error) {
+            console.log('got an error: ' + error);
+        }
 
         return successfulLogin;
     }

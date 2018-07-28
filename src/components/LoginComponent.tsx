@@ -34,7 +34,7 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
     constructor(props: PropValues) {
         super(props);
         this.state = {
-            isModalOpen : false
+            isModalOpen: false
         };
     }
 
@@ -56,7 +56,7 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
                                     name="userName"
                                     id="userName"
                                     className="form-control"
-                                    placeholder="Username"             
+                                    placeholder="Username"
                                     onBlur={event => this.userNameChanged(event)}
                                 />
                             </div>
@@ -100,14 +100,22 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
         );
     }
 
-    loginButtonClicked(event: React.FormEvent<HTMLInputElement>) {
+    loginButtonClicked = async (event: React.FormEvent<HTMLInputElement>) => {
 
-        let successfulLogin = this.props.userWarehouse.setLoggedInUser(this.userName, this.password);
-        if ( successfulLogin ) {
-            this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
-        } else {
-            this.setState({ isModalOpen: true });
+        try {
+            let validID = await this.props.userWarehouse.validateLogin(this.userName, this.password);
+            console.log('validId: ' + validID);
+
+            let successfulLogin = this.props.userWarehouse.setLoggedInUser(this.userName, this.password);
+            if (successfulLogin) {
+                this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
+            } else {
+                this.setState({ isModalOpen: true });
+            }
+        } catch (error) {
+            this.setState({ isModalOpen: true});
         }
+
     }
 
     userNameChanged(event: React.FormEvent<HTMLInputElement>) {

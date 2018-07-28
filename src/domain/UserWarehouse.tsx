@@ -67,4 +67,9 @@ export class UserWarehouse {
             }
         });
     }
+
+    validateLogin = async (id: string, password: string) => {
+        let isValid = await this.dataProvider.validateLogin(id, password);
+        return isValid;
+    }
 }

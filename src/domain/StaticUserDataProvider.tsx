@@ -31,6 +31,17 @@ export class StaticUserDataProvider implements UserDataProvider {
         });
 
         return theReturn;
+    }
 
+    validateLogin = async (id: string, password: string) => {
+        let isValidLogin = false;
+
+        this.users.forEach((myUser: User) => {
+            if (id === myUser.id && password === myUser.password ) {
+                isValidLogin = true;
+            }
+        });
+
+        return isValidLogin;
     }
 }

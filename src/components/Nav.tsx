@@ -30,7 +30,7 @@ class Nav extends React.Component<PropValues, {}> {
     if (this.props.userWarehouse.loggedInUser) {
       let myString = this.props.userWarehouse.loggedInUser.name + ' chatting with ';
       loggedInUserElements.push(<div style={whiteFontStyle}>{myString}</div>);
-      this.props.userWarehouse.getUsersForLoggedInUser().forEach((myUser: User) => {
+      this.props.userWarehouse.users.forEach((myUser: User) => {
         partnerElements.push(<option >{myUser.name}</option>);
       });
 

@@ -17,30 +17,39 @@ export class FirebaseUserDataProvider implements UserDataProvider {
         this.usersReference.on('child_added', this.userAddedFromDatabase);
     }
 
-    getUsersForUserOfCategory = (aUser: User)  => {
+    getUsersForUserOfCategory = async (aUser: User) => {
 
         let theReturn = new Array<User>();
 
-        this.users.forEach((myUser: User) => {
-            if (aUser.category === myUser.category && aUser !== myUser ) {
-                theReturn.push(myUser);
-            }
+        let myQuery = this.database.ref('users').orderByChild('category').equalTo(aUser.category);
+        await myQuery.once('value').then(function (snapshot: firebase.database.DataSnapshot) {
+            snapshot.forEach(function (childSnapshot: firebase.database.DataSnapshot) {
+                console.log('child snap key: ' + childSnapshot.key);
+                if (aUser.id !== childSnapshot.key) {
+                    var myUser = new User(  childSnapshot.key,
+                                            childSnapshot.val().name,
+                                            null,
+                                            childSnapshot.val().category);
+                    theReturn.push(myUser);
+                }
+
+                // });
+            });
         });
 
         return theReturn;
-
     }
 
     // tslint:disable-next-line
     userAddedFromDatabase = (data: any) => {
-        this.users.push(new User(data.key,  data.val().name, data.val().password, data.val().category));
+        this.users.push(new User(data.key, data.val().name, data.val().password, data.val().category));
     }
 
     getUserForId = async (id: string) => {
         let myUser = new User('Placeholder', 'Placeholder', null, '999');
         let myQuery = this.database.ref('users').orderByKey().equalTo(id);
-        await myQuery.once('value').then(function(snapshot: firebase.database.DataSnapshot) {
-            snapshot.forEach( (childSnapshot: firebase.database.DataSnapshot) => {
+        await myQuery.once('value').then(function (snapshot: firebase.database.DataSnapshot) {
+            snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
                 myUser = new User(childSnapshot.key, childSnapshot.val().name, null, childSnapshot.val().category);
             });
         });

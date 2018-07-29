@@ -9,21 +9,22 @@ export class UserWarehouse {
     @observable loggedInUser: User;
     @observable partnerUser: User;
     @observable conversation: Conversation;
+    @observable users = new Array<User>();
 
     constructor(mydataProvider: UserDataProvider) {
         this.dataProvider = mydataProvider;
     }
 
-    @computed
-    get users() {
-        if (this.loggedInUser) {
-            return this.dataProvider.getUsersForUserOfCategory(this.loggedInUser);
-        } else {
-            return this.dataProvider.users;
-        }
-    }
+    // @computed
+    // get users() {
+    //     if (this.loggedInUser) {
+    //         return  this.dataProvider.getUsersForUserOfCategory(this.loggedInUser);
+    //     } else {
+    //         return this.dataProvider.users;
+    //     }
+    // }
 
-    setLoggedInUser = async (id: string, password: string) => {
+    setLoggedInUser = async (id: string) => {
 
         let successfulLogin = false;
 
@@ -31,8 +32,9 @@ export class UserWarehouse {
             successfulLogin = true;
             this.loggedInUser = await this.dataProvider.getUserForId(id);
             let myUsers = await this.getUsersForLoggedInUser();
-            if (myUsers && myUsers.length > 0) {
-                this.partnerUser = myUsers[0];
+            this.users.push(... myUsers);
+            if (this.users.length > 0) {
+                this.partnerUser = this.users[0];
                 this.conversation = new Conversation(this.loggedInUser, this.partnerUser);
             } else {
                 this.conversation = new Conversation(this.loggedInUser, null);
@@ -53,6 +55,7 @@ export class UserWarehouse {
     }
 
     setConversationPartner = (partnerName: string) => {
+
         this.users.forEach((myUser: User) => {
             if (partnerName === myUser.name) {
                 this.partnerUser = myUser;

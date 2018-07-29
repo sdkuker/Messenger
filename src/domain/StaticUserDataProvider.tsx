@@ -20,7 +20,7 @@ export class StaticUserDataProvider implements UserDataProvider {
         }
     }
 
-    getUsersForUserOfCategory = (aUser: User)  => {
+    getUsersForUserOfCategory = async (aUser: User)  => {
 
         let theReturn = new Array<User>();
 

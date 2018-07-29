@@ -104,18 +104,19 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
 
         try {
             let validID = await this.props.userWarehouse.validateLogin(this.userId, this.password);
-            console.log('validId: ' + validID);
-
-            let successfulLogin = this.props.userWarehouse.setLoggedInUser(this.userId, this.password);
-            if (successfulLogin) {
-                this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
+            if (validID) {
+                let loggedInUserSetupSuccessful = await this.props.userWarehouse.setLoggedInUser(this.userId);
+                if (loggedInUserSetupSuccessful) {
+                    this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
+                } else {
+                    this.setState({ isModalOpen: true });
+                }
             } else {
                 this.setState({ isModalOpen: true });
             }
         } catch (error) {
-            this.setState({ isModalOpen: true});
+            this.setState({ isModalOpen: true });
         }
-
     }
 
     userIdChanged(event: React.FormEvent<HTMLInputElement>) {

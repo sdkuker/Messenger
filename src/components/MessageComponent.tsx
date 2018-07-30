@@ -19,19 +19,17 @@ class MessageComponent extends React.Component<PropValues, {}> {
         // tslint:disable-next-line
         let myHtml: any = [];
 
-        console.log('this message creation date: ' + this.props.message.creationDate.getTime());
-        console.log('previous creation date: ' + this.props.previousMessageDate.getTime());
         if ((this.props.message.creationDate.getTime() - this.props.previousMessageDate.getTime()) >
             this.displayDateInterval) {
             myHtml.push((
                 <div>
-                    <p> <br />
+                    <br />
                     <span className="small">{this.props.message.creationDate.toDateString() + ' - ' +
                         this.props.message.creationDate.toLocaleTimeString()}</span>
-                    <p>{this.props.message.sender + ' - '}
+                    <br />
+                    <span>{this.props.message.sender + ' - '}
                         <span>{this.props.message.text}</span>
-                    </p>
-                    </p>
+                    </span>
                 </div>
             ));
         } else {

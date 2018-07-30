@@ -15,15 +15,6 @@ export class UserWarehouse {
         this.dataProvider = mydataProvider;
     }
 
-    // @computed
-    // get users() {
-    //     if (this.loggedInUser) {
-    //         return  this.dataProvider.getUsersForUserOfCategory(this.loggedInUser);
-    //     } else {
-    //         return this.dataProvider.users;
-    //     }
-    // }
-
     setLoggedInUser = async (id: string) => {
 
         let successfulLogin = false;
@@ -40,7 +31,8 @@ export class UserWarehouse {
                 this.conversation = new Conversation(this.loggedInUser, null);
             }
         } catch (error) {
-            console.log('got an error: ' + error);
+            // eslint-disable-next-line
+            console.log('got an error setting the logged in user: ' + error);
         }
 
         return successfulLogin;

@@ -24,7 +24,6 @@ export class FirebaseUserDataProvider implements UserDataProvider {
         let myQuery = this.database.ref('users').orderByChild('category').equalTo(aUser.category);
         await myQuery.once('value').then(function (snapshot: firebase.database.DataSnapshot) {
             snapshot.forEach(function (childSnapshot: firebase.database.DataSnapshot) {
-                console.log('child snap key: ' + childSnapshot.key);
                 if (aUser.id !== childSnapshot.key) {
                     var myUser = new User(  childSnapshot.key,
                                             childSnapshot.val().name,
@@ -32,8 +31,6 @@ export class FirebaseUserDataProvider implements UserDataProvider {
                                             childSnapshot.val().category);
                     theReturn.push(myUser);
                 }
-
-                // });
             });
         });
 

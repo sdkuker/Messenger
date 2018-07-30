@@ -5,10 +5,14 @@ export class Message {
     text: string;
     creationDate: Date;
 
-    constructor(aKey: string, aSender: string, someText: string) {
+    constructor(aKey: string, aSender: string, someText: string, aCreationDate: Date | null) {
         this.key = aKey;
         this.sender = aSender;
         this.text = someText;
-        this.creationDate = new Date();
+        if (aCreationDate) {
+            this.creationDate = aCreationDate;
+        } else {
+            this.creationDate = new Date();
+        }
     }
 }

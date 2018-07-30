@@ -16,13 +16,17 @@ class MessageList extends React.Component<PropValues, {}> {
 
     public render() {
 
+        let previousMessageDate = new Date();
+
         // tslint:disable-next-line
         let messageComponents: any = [];
         this.props.messages.forEach((aMessage: Message) => {
             messageComponents.push(
-                <MessageComponent message={aMessage} key={aMessage.key} />
+                <MessageComponent message={aMessage} previousMessageDate={previousMessageDate} key={aMessage.key} />
             );
+            previousMessageDate = aMessage.creationDate;
         });
+        
         return (
             <div className="special-container">
                 <ul className="list-group">

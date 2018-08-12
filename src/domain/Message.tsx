@@ -4,11 +4,13 @@ export class Message {
     sender: string;
     text: string;
     creationDate: Date;
+    type: string;
 
-    constructor(aKey: string, aSender: string, someText: string, aCreationDate: Date | null) {
+    constructor(aKey: string, aSender: string, someText: string, aType: string, aCreationDate: Date | null) {
         this.key = aKey;
         this.sender = aSender;
         this.text = someText;
+        this.type = aType;
         if (aCreationDate) {
             this.creationDate = aCreationDate;
         } else {

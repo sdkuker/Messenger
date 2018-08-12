@@ -18,6 +18,18 @@ class MessageComponent extends React.Component<PropValues, {}> {
 
         // tslint:disable-next-line
         let myHtml: any = [];
+        // tslint:disable-next-line
+        var content: any = [];
+        if (this.props.message.type === 'image') {
+            content.push((
+                <div>
+                    <img width="250" height="300" src={this.props.message.text}/>;
+                    <br />
+                </div>
+            ));
+        } else {
+            content.push(<span>{this.props.message.text}</span>);
+        }
 
         if ((this.props.message.creationDate.getTime() - this.props.previousMessageDate.getTime()) >
             this.displayDateInterval) {
@@ -28,7 +40,7 @@ class MessageComponent extends React.Component<PropValues, {}> {
                         this.props.message.creationDate.toLocaleTimeString()}</span>
                     <br />
                     <span>{this.props.message.sender + ' - '}
-                        <span>{this.props.message.text}</span>
+                        {content}
                     </span>
                 </div>
             ));
@@ -36,7 +48,7 @@ class MessageComponent extends React.Component<PropValues, {}> {
             myHtml.push((
                 <div>
                     <span>{this.props.message.sender + ' - '}
-                        <span>{this.props.message.text}</span>
+                        {content}
                     </span>
                 </div>
             ));

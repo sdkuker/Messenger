@@ -2,7 +2,6 @@ import * as React from 'react';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
 import { Message } from '../domain/Message';
 import { User } from '../domain/User';
-import { isNull } from 'util';
 
 interface PropValues {
     messageWarehouse: MessageWarehouse;
@@ -14,6 +13,8 @@ class Footer extends React.Component<PropValues, {}> {
     defaultMessage = 'Your Message';
      // tslint:disable-next-line
     inputTextRef: any;
+    // tslint:disable-next-line
+    inputImageRef: any;
 
     constructor(props: PropValues) {
         super(props);
@@ -21,6 +22,7 @@ class Footer extends React.Component<PropValues, {}> {
         this.messageEntered = this.messageEntered.bind(this);
         this.enterClicked = this.enterClicked.bind(this);
         this.inputTextRef = React.createRef();
+        this.inputImageRef = React.createRef();
     }
 
     public render() {
@@ -38,6 +40,12 @@ class Footer extends React.Component<PropValues, {}> {
                             className="form-control"
                             ref={this.inputTextRef}
                         />
+                        <input
+                            type="file"
+                            name="myFileInput"
+                            onChange={(e) => this.fileSelected(e.target.files)}
+                            ref={this.inputImageRef}
+                        />
                     </div>
                 </div>
             </footer>
@@ -52,9 +60,26 @@ class Footer extends React.Component<PropValues, {}> {
     }
 
     messageEntered(event: React.FormEvent<HTMLInputElement>) {
-        // console.log('Message entered and currentTarget.value is: ' + event.currentTarget.value);
         if (event.currentTarget.value === this.defaultMessage) {
             event.currentTarget.value = '';
+        }
+    }
+
+    // tslint:disable-next-line
+    fileSelected(selectorFiles: FileList | null) {
+        if (selectorFiles) {
+             for (var index = 0; index < selectorFiles.length; index++) {
+                 var self = this;
+                 var reader = new FileReader();
+                 reader.onload = function() {
+                     var dataURL = reader.result;
+                     const myMessage = new Message('1', self.props.loggedInUser.name, dataURL, 'image', null);
+                     self.props.messageWarehouse.add(myMessage);
+                     self.inputImageRef.current.value = '';
+ 
+                 };
+                 reader.readAsDataURL(selectorFiles[index]);
+             }
         }
     }
 
@@ -65,7 +90,11 @@ class Footer extends React.Component<PropValues, {}> {
         if (event.keyCode === 13) {
             if (event.currentTarget.value) {
                 if (event.currentTarget.value !== this.defaultMessage) {
-                    const myMessage = new Message('1', this.props.loggedInUser.name, event.currentTarget.value, null);
+                    const myMessage = new Message(  '1', 
+                                                    this.props.loggedInUser.name, 
+                                                    event.currentTarget.value, 
+                                                    'text', 
+                                                    null);
                     this.props.messageWarehouse.add(myMessage);
                     this.inputTextRef.current.value = '';
                 }

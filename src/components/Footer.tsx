@@ -11,7 +11,7 @@ interface PropValues {
 class Footer extends React.Component<PropValues, {}> {
 
     defaultMessage = 'Your Message';
-    // tslint:disable-next-line
+     // tslint:disable-next-line
     inputTextRef: any;
     // tslint:disable-next-line
     inputImageRef: any;
@@ -68,20 +68,18 @@ class Footer extends React.Component<PropValues, {}> {
     // tslint:disable-next-line
     fileSelected(selectorFiles: FileList | null) {
         if (selectorFiles) {
-            for (var index = 0; index < selectorFiles.length; index++) {
-                if (selectorFiles[index].type.match(/image.*/)) {
-                    var self = this;
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        var myImage = reader.result;
-                        const myMessage = new Message('1', self.props.loggedInUser.name, myImage, 'image', null);
-                        self.props.messageWarehouse.add(myMessage);
-                        self.inputImageRef.current.value = '';
-                    };
-                    reader.readAsDataURL(selectorFiles[index]);
-                }
-
-            }
+             for (var index = 0; index < selectorFiles.length; index++) {
+                 var self = this;
+                 var reader = new FileReader();
+                 reader.onload = function() {
+                     var dataURL = reader.result;
+                     const myMessage = new Message('1', self.props.loggedInUser.name, dataURL, 'image', null);
+                     self.props.messageWarehouse.add(myMessage);
+                     self.inputImageRef.current.value = '';
+ 
+                 };
+                 reader.readAsDataURL(selectorFiles[index]);
+             }
         }
     }
 
@@ -92,12 +90,11 @@ class Footer extends React.Component<PropValues, {}> {
         if (event.keyCode === 13) {
             if (event.currentTarget.value) {
                 if (event.currentTarget.value !== this.defaultMessage) {
-                    const myMessage = new Message(
-                        '1',
-                        this.props.loggedInUser.name,
-                        event.currentTarget.value,
-                        'text',
-                        null);
+                    const myMessage = new Message(  '1', 
+                                                    this.props.loggedInUser.name, 
+                                                    event.currentTarget.value, 
+                                                    'text', 
+                                                    null);
                     this.props.messageWarehouse.add(myMessage);
                     this.inputTextRef.current.value = '';
                 }

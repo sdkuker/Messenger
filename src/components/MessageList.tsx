@@ -10,6 +10,7 @@ interface PropValues {
 @observer
 class MessageList extends React.Component<PropValues, {}> {
 
+    messagesEnd: HTMLElement | null;
     constructor(props: PropValues) {
         super(props);
     }
@@ -32,8 +33,16 @@ class MessageList extends React.Component<PropValues, {}> {
                 <ul className="list-group">
                     {messageComponents}
                 </ul>
+                <div ref={(el) => {this.messagesEnd = el; }} />
+                {this.scrollToBottom()}
             </div>
         );
+    }
+
+    scrollToBottom = () => {
+        if (this.messagesEnd) {
+            this.messagesEnd.scrollIntoView({block: 'end', behavior: 'smooth'});
+        }
     }
 }
 

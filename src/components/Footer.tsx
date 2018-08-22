@@ -72,15 +72,51 @@ class Footer extends React.Component<PropValues, {}> {
                  var self = this;
                  var reader = new FileReader();
                  reader.onload = function() {
-                     var dataURL = reader.result;
-                     const myMessage = new Message('1', self.props.loggedInUser.name, dataURL, 'image', null);
-                     self.props.messageWarehouse.add(myMessage);
-                     self.inputImageRef.current.value = '';
- 
+                    var reducedSizeCanvas = document.createElement('canvas');
+                    reducedSizeCanvas.width = 250;
+                    reducedSizeCanvas.height = 300;
+                    var reducedSizeCtx = reducedSizeCanvas.getContext('2d');
+                    var originalImage = new Image();
+                    originalImage.addEventListener('load', function () {
+                        if (reducedSizeCtx) {
+                            // reducedSizeCtx.drawImage(  originalImage, 
+                            //                 reducedSizeCanvas.width / 2 - originalImage.width / 2, 
+                            //                 reducedSizeCanvas.height / 2 - originalImage.width / 2);
+                            // self.rotateImage(originalImage, reducedSizeCtx, reducedSizeCanvas);
+                            reducedSizeCtx.drawImage(   originalImage, 0, 0, originalImage.width, originalImage.height, 
+                                                        0, 0, reducedSizeCanvas.width, reducedSizeCanvas.height);
+                            var reducedImage = reducedSizeCanvas.toDataURL('image/png', 0.5);
+                            const myMessage = new Message(  '1', 
+                                                            self.props.loggedInUser.name, 
+                                                            reducedImage, 
+                                                            'image',
+                                                            reducedSizeCanvas.width,
+                                                            reducedSizeCanvas.height,
+                                                            null);
+                            self.props.messageWarehouse.add(myMessage);
+                            self.inputImageRef.current.value = '';
+                        }    
+                    });
+                    var originalImageReaderResults = reader.result;
+                    if (originalImageReaderResults &&  typeof originalImageReaderResults === 'string') {
+                        originalImage.src = originalImageReaderResults;
+                    }
                  };
                  reader.readAsDataURL(selectorFiles[index]);
              }
         }
+    }
+
+    rotateImage(    originalImage: HTMLImageElement, reducedSizeCtx: CanvasRenderingContext2D, 
+                    reducedSizeCanvas: HTMLCanvasElement) {
+        reducedSizeCtx.clearRect(0, 0, reducedSizeCanvas.width, reducedSizeCanvas.height);
+        reducedSizeCtx.save();
+        reducedSizeCtx.translate(reducedSizeCanvas.width / 2, reducedSizeCanvas.height / 2);
+        reducedSizeCtx.rotate(90 * Math.PI / 180);
+        // reducedSizeCtx.drawImage(originalImage, - originalImage.width / 2, - originalImage.height / 2);
+        reducedSizeCtx.drawImage(   originalImage, 0, 0, originalImage.width, originalImage.height, 0, 0, 
+                                    reducedSizeCanvas.width, reducedSizeCanvas.height);
+        reducedSizeCtx.restore();
     }
 
     /*
@@ -94,6 +130,8 @@ class Footer extends React.Component<PropValues, {}> {
                                                     this.props.loggedInUser.name, 
                                                     event.currentTarget.value, 
                                                     'text', 
+                                                    null,
+                                                    null,
                                                     null);
                     this.props.messageWarehouse.add(myMessage);
                     this.inputTextRef.current.value = '';

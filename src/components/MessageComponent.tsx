@@ -23,7 +23,11 @@ class MessageComponent extends React.Component<PropValues, {}> {
         if (this.props.message.type === 'image') {
             content.push((
                 <div>
-                    <img width="250" height="300" src={this.props.message.text}/>;
+                    <img 
+                         width={this.props.message.width} 
+                         height={this.props.message.height} 
+                         src={this.props.message.text}
+                    />;
                     <br />
                 </div>
             ));

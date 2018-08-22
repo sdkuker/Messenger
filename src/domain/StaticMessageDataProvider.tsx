@@ -12,8 +12,8 @@ export class StaticMessageDataProvider implements MessageDataProvider {
             this.messages = myMessages;
         } else {
             const staticMessages = Array<Message>();
-            staticMessages.push(new Message('1', 'Steve', 'Steves first message', 'text', null));
-            staticMessages.push(new Message('2', 'Michelle', 'Michelles first message', 'text', null));
+            staticMessages.push(new Message('1', 'Steve', 'Steves first message', 'text', null, null, null));
+            staticMessages.push(new Message('2', 'Michelle', 'Michelles first message', 'text', null, null, null));
             this.messages = staticMessages;
         }
     }

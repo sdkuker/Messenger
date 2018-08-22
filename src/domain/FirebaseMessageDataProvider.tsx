@@ -19,7 +19,7 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
     add = (aMessage: Message) => {
         const newPostRef = this.reference.push();
         // tslint:disable-next-line
-        newPostRef.set({sender: aMessage.sender, text: aMessage.text, type: aMessage.type, creationDate: aMessage.creationDate.toJSON()}, function(error: any) {
+        newPostRef.set({sender: aMessage.sender, text: aMessage.text, type: aMessage.type, width: aMessage.width, height: aMessage.height, creationDate: aMessage.creationDate.toJSON()}, function(error: any) {
             // if (error) {
             //     console.log('the set failed');
             // } else {
@@ -41,6 +41,7 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
             type = data.val().type;
         }
         this.messages.push(new Message( data.key, data.val().sender, 
-                                        data.val().text, type, new Date(data.val().creationDate)));
+                                        data.val().text, type, data.val().width, data.val().height, 
+                                        new Date(data.val().creationDate)));
     }
 }

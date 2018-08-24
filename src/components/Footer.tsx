@@ -85,16 +85,24 @@ class Footer extends React.Component<PropValues, {}> {
                             // self.rotateImage(originalImage, reducedSizeCtx, reducedSizeCanvas);
                             reducedSizeCtx.drawImage(   originalImage, 0, 0, originalImage.width, originalImage.height, 
                                                         0, 0, reducedSizeCanvas.width, reducedSizeCanvas.height);
-                            var reducedImage = reducedSizeCanvas.toDataURL('image/png', 0.5);
-                            const myMessage = new Message(  '1', 
-                                                            self.props.loggedInUser.name, 
-                                                            reducedImage, 
-                                                            'image',
-                                                            reducedSizeCanvas.width,
-                                                            reducedSizeCanvas.height,
-                                                            null);
-                            self.props.messageWarehouse.add(myMessage);
-                            self.inputImageRef.current.value = '';
+                            var rotatedCanvas = document.createElement('canvas');
+                            rotatedCanvas.width = reducedSizeCanvas.height;
+                            rotatedCanvas.height = reducedSizeCanvas.width;
+                            var rotatedCtx = rotatedCanvas.getContext('2d');  
+                            if (rotatedCtx) {
+                                self.rotateImage(reducedSizeCanvas, rotatedCtx, rotatedCanvas);                      
+                                var rotatedImage = rotatedCanvas.toDataURL('image/png', 0.5);
+                                const myMessage = new Message(  '1', 
+                                                                self.props.loggedInUser.name, 
+                                                                rotatedImage, 
+                                                                'image',
+                                                                rotatedCanvas.width,
+                                                                rotatedCanvas.height,
+                                                                null);
+                                self.props.messageWarehouse.add(myMessage);
+                                self.inputImageRef.current.value = '';
+                            }    
+
                         }    
                     });
                     var originalImageReaderResults = reader.result;
@@ -107,16 +115,16 @@ class Footer extends React.Component<PropValues, {}> {
         }
     }
 
-    rotateImage(    originalImage: HTMLImageElement, reducedSizeCtx: CanvasRenderingContext2D, 
-                    reducedSizeCanvas: HTMLCanvasElement) {
-        reducedSizeCtx.clearRect(0, 0, reducedSizeCanvas.width, reducedSizeCanvas.height);
-        reducedSizeCtx.save();
-        reducedSizeCtx.translate(reducedSizeCanvas.width / 2, reducedSizeCanvas.height / 2);
-        reducedSizeCtx.rotate(90 * Math.PI / 180);
-        // reducedSizeCtx.drawImage(originalImage, - originalImage.width / 2, - originalImage.height / 2);
-        reducedSizeCtx.drawImage(   originalImage, 0, 0, originalImage.width, originalImage.height, 0, 0, 
-                                    reducedSizeCanvas.width, reducedSizeCanvas.height);
-        reducedSizeCtx.restore();
+    rotateImage(    originalImage: HTMLImageElement | HTMLCanvasElement, rotatedSizeCtx: CanvasRenderingContext2D, 
+                    rotatedSizeCanvas: HTMLCanvasElement) {
+        // rotatedSizeCtx.clearRect(0, 0, rotatedSizeCanvas.width, rotatedSizeCanvas.height);
+        // rotatedSizeCtx.save();
+        rotatedSizeCtx.translate(rotatedSizeCanvas.width / 2, rotatedSizeCanvas.height / 2);
+        rotatedSizeCtx.rotate(90 * Math.PI / 180);
+        rotatedSizeCtx.drawImage(originalImage, - originalImage.width / 2, - originalImage.height / 2);
+        // rotatedSizeCtx.drawImage(   originalImage, 0, 0, originalImage.width, originalImage.height, 0, 0, 
+        //                            rotatedSizeCanvas.width, rotatedSizeCanvas.height);
+        rotatedSizeCtx.restore();
     }
 
     /*

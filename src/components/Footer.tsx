@@ -11,7 +11,7 @@ interface PropValues {
 class Footer extends React.Component<PropValues, {}> {
 
     defaultMessage = 'Your Message';
-     // tslint:disable-next-line
+    // tslint:disable-next-line
     inputTextRef: any;
     // tslint:disable-next-line
     inputImageRef: any;
@@ -68,54 +68,66 @@ class Footer extends React.Component<PropValues, {}> {
     // tslint:disable-next-line
     fileSelected(selectorFiles: FileList | null) {
         if (selectorFiles) {
-             for (var index = 0; index < selectorFiles.length; index++) {
-                 var self = this;
-                 var reader = new FileReader();
-                 reader.onload = function() {
-                    var reducedSizeCanvas = document.createElement('canvas');
-                    reducedSizeCanvas.width = 250;
-                    reducedSizeCanvas.height = 300;
-                    var reducedSizeCtx = reducedSizeCanvas.getContext('2d');
+            for (var index = 0; index < selectorFiles.length; index++) {
+                var self = this;
+                var maxWidth = 300;
+                var maxHeight = 225;
+                var reader = new FileReader();
+                reader.onload = function () {
                     var originalImage = new Image();
                     originalImage.addEventListener('load', function () {
+                        var width = originalImage.width;
+                        var height = originalImage.height;
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+                        var reducedSizeCanvas = document.createElement('canvas');
+                        reducedSizeCanvas.width = width;
+                        reducedSizeCanvas.height = height;
+                        var reducedSizeCtx = reducedSizeCanvas.getContext('2d');
                         if (reducedSizeCtx) {
-                            // reducedSizeCtx.drawImage(  originalImage, 
-                            //                 reducedSizeCanvas.width / 2 - originalImage.width / 2, 
-                            //                 reducedSizeCanvas.height / 2 - originalImage.width / 2);
-                            // self.rotateImage(originalImage, reducedSizeCtx, reducedSizeCanvas);
-                            reducedSizeCtx.drawImage(   originalImage, 0, 0, originalImage.width, originalImage.height, 
-                                                        0, 0, reducedSizeCanvas.width, reducedSizeCanvas.height);
+                            reducedSizeCtx.drawImage(   originalImage, 0, 0, originalImage.width, 
+                                                        originalImage.height, 0, 0, 
+                                                        reducedSizeCanvas.width, reducedSizeCanvas.height);
                             var rotatedCanvas = document.createElement('canvas');
                             rotatedCanvas.width = reducedSizeCanvas.height;
                             rotatedCanvas.height = reducedSizeCanvas.width;
-                            var rotatedCtx = rotatedCanvas.getContext('2d');  
+                            var rotatedCtx = rotatedCanvas.getContext('2d');
                             if (rotatedCtx) {
-                                self.rotateImage(reducedSizeCanvas, rotatedCtx, rotatedCanvas);                      
+                                self.rotateImage(reducedSizeCanvas, rotatedCtx, rotatedCanvas);
                                 var rotatedImage = rotatedCanvas.toDataURL('image/png', 0.5);
-                                const myMessage = new Message(  '1', 
-                                                                self.props.loggedInUser.name, 
-                                                                rotatedImage, 
+                                const myMessage = new Message(  '1',
+                                                                self.props.loggedInUser.name,
+                                                                rotatedImage,
                                                                 'image',
                                                                 rotatedCanvas.width,
                                                                 rotatedCanvas.height,
                                                                 null);
                                 self.props.messageWarehouse.add(myMessage);
                                 self.inputImageRef.current.value = '';
-                            }    
+                            }
 
-                        }    
+                        }
                     });
                     var originalImageReaderResults = reader.result;
-                    if (originalImageReaderResults &&  typeof originalImageReaderResults === 'string') {
+                    if (originalImageReaderResults && typeof originalImageReaderResults === 'string') {
                         originalImage.src = originalImageReaderResults;
                     }
-                 };
-                 reader.readAsDataURL(selectorFiles[index]);
-             }
+                };
+                reader.readAsDataURL(selectorFiles[index]);
+            }
         }
     }
 
-    rotateImage(    originalImage: HTMLImageElement | HTMLCanvasElement, rotatedSizeCtx: CanvasRenderingContext2D, 
+    rotateImage(    originalImage: HTMLImageElement | HTMLCanvasElement, rotatedSizeCtx: CanvasRenderingContext2D,
                     rotatedSizeCanvas: HTMLCanvasElement) {
         // rotatedSizeCtx.clearRect(0, 0, rotatedSizeCanvas.width, rotatedSizeCanvas.height);
         // rotatedSizeCtx.save();
@@ -134,13 +146,14 @@ class Footer extends React.Component<PropValues, {}> {
         if (event.keyCode === 13) {
             if (event.currentTarget.value) {
                 if (event.currentTarget.value !== this.defaultMessage) {
-                    const myMessage = new Message(  '1', 
-                                                    this.props.loggedInUser.name, 
-                                                    event.currentTarget.value, 
-                                                    'text', 
-                                                    null,
-                                                    null,
-                                                    null);
+                    const myMessage = new Message(
+                        '1',
+                        this.props.loggedInUser.name,
+                        event.currentTarget.value,
+                        'text',
+                        null,
+                        null,
+                        null);
                     this.props.messageWarehouse.add(myMessage);
                     this.inputTextRef.current.value = '';
                 }

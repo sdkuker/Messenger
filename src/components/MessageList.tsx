@@ -10,6 +10,8 @@ interface PropValues {
 @observer
 class MessageList extends React.Component<PropValues, {}> {
 
+    private messageListRef = React.createRef<HTMLDivElement>();
+
     constructor(props: PropValues) {
         super(props);
     }
@@ -28,12 +30,20 @@ class MessageList extends React.Component<PropValues, {}> {
         });
         
         return (
-            <div className="special-container">
+            <div className="special-container" ref={this.messageListRef}>
                 <ul className="list-group">
                     {messageComponents}
                 </ul>
             </div>
         );
+    }
+
+    componentDidUpdate() {
+        if (this.messageListRef.current) {
+            // this.messageListRef.current.scrollTop = this.messageListRef.current.scrollHeight;
+            this.messageListRef.current.scrollIntoView(false);
+        }
+        
     }
 }
 

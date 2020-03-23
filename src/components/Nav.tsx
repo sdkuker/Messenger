@@ -103,7 +103,12 @@ class Nav extends React.Component<PropValues,  StateValues> {
       newStateIs50Messages = false;
     }
     this.setState({ last50MessagesOnlySelected: newStateIs50Messages });
-    this.props.numberOfMessagesToDisplay('last50');
+
+    if (newStateIs50Messages) {
+      this.props.numberOfMessagesToDisplay('last50');
+    } else {
+      this.props.numberOfMessagesToDisplay('all');
+    }
   }
 }
 

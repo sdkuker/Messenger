@@ -6,13 +6,22 @@ import { observer } from 'mobx-react';
 interface PropValues {
   userWarehouse: UserWarehouse;
   conversationPartnerChanged: Function;
+  numberOfMessagesToDisplay: Function;
+
+}
+
+interface StateValues {
+  last50MessagesOnlySelected: boolean;
 }
 
 @observer
-class Nav extends React.Component<PropValues, {}> {
+class Nav extends React.Component<PropValues,  StateValues> {
 
   constructor(props: PropValues) {
     super(props);
+    this.state = {
+      last50MessagesOnlySelected: true
+    };
   }
 
   public render() {
@@ -51,6 +60,30 @@ class Nav extends React.Component<PropValues, {}> {
         >
           {partnerElements}
         </select>
+        <div className="radio">
+          <label style={whiteFontStyle}>
+            <input 
+              type="radio" 
+              value="last50MessagesRadioOption" 
+              checked={this.state.last50MessagesOnlySelected} 
+              onChange={e => this.handleRadioButonOptionChange(e)
+                       }
+            />
+            Last 50 Messages Only
+            </label>
+        </div>
+        <div className="radio">
+          <label style={whiteFontStyle}>
+            <input 
+              type="radio" 
+              value="allMessagesRadioOption" 
+              checked={! this.state.last50MessagesOnlySelected} 
+              onChange={e => this.handleRadioButonOptionChange(e)
+                       }
+            />
+            All Messages
+            </label>
+        </div>
       </nav>
     );
   }
@@ -58,6 +91,19 @@ class Nav extends React.Component<PropValues, {}> {
   partnerSelected(event: React.FormEvent<HTMLSelectElement>) {
     let selectedUserName = event.currentTarget.value;
     this.props.conversationPartnerChanged(selectedUserName);
+  }
+
+  handleRadioButonOptionChange(event: React.ChangeEvent<HTMLInputElement>) {
+
+    let newStateIs50Messages = true;
+
+    if (event.target.value === 'last50MessagesRadioOption') {
+      newStateIs50Messages = true;
+    } else {
+      newStateIs50Messages = false;
+    }
+    this.setState({ last50MessagesOnlySelected: newStateIs50Messages });
+    this.props.numberOfMessagesToDisplay('last50');
   }
 }
 

@@ -108,6 +108,7 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
                 let loggedInUserSetupSuccessful = await this.props.userWarehouse.setLoggedInUser(this.userId);
                 if (loggedInUserSetupSuccessful) {
                     this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
+                    this.props.messageWarehouse.numberOfMessagesToDisplay('last50');
                 } else {
                     this.setState({ isModalOpen: true });
                 }

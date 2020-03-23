@@ -27,4 +27,8 @@ export class MessageWarehouse {
         this.dataProvider.setConversation(aConversation);
     }
 
+    numberOfMessagesToDisplay = (numberOfMessagesToDisplay: string) => {
+        this.dataProvider.setNumberOfMessagesToDisplay(numberOfMessagesToDisplay);
+    }
+
 }

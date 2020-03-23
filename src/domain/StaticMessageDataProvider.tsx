@@ -24,4 +24,8 @@ export class StaticMessageDataProvider implements MessageDataProvider {
     setConversation = (aConversation: Conversation) => {
         // console.log('not sure what to do here');
     }
+
+    setNumberOfMessagesToDisplay = (numberOfMessagesToDisplayDescription: string) => {
+        // console.log('not sure what to do here either');
+    }
 }

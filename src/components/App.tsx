@@ -36,6 +36,7 @@ class App extends React.Component {
               <Nav 
                 userWarehouse={this.myUserWarehouse}
                 conversationPartnerChanged={this.conversationPartnerChanged} 
+                numberOfMessagesToDisplay={this.numberOfMessagesToDisplay}
               />));
       myHtml.push(<MessageList messages={this.myMessageWarehouse.messages} />);
       myHtml.push((
@@ -48,6 +49,7 @@ class App extends React.Component {
             <Nav 
               userWarehouse={this.myUserWarehouse} 
               conversationPartnerChanged={this.conversationPartnerChanged} 
+              numberOfMessagesToDisplay={this.numberOfMessagesToDisplay}
             />));
       myHtml.push(<LoginComponent userWarehouse={this.myUserWarehouse} messageWarehouse={this.myMessageWarehouse}/>);
     }
@@ -61,6 +63,10 @@ class App extends React.Component {
   conversationPartnerChanged = (partnerName: string) => {
     this.myUserWarehouse.setConversationPartner(partnerName);
     this.myMessageWarehouse.conversationPartnerChanged(this.myUserWarehouse.conversation);
+  }
+
+  numberOfMessagesToDisplay = (numberOfMessagesToDisplay: string) => {
+    this.myMessageWarehouse.numberOfMessagesToDisplay(numberOfMessagesToDisplay);
   }
 }
 

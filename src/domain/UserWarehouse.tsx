@@ -32,7 +32,7 @@ export class UserWarehouse {
             }
         } catch (error) {
             // eslint-disable-next-line
-            console.log('got an error setting the logged in user: ' + error);
+            alert('got an error setting the logged in user: ' + error);
         }
 
         return successfulLogin;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
 import { Message } from '../domain/Message';
 import { User } from '../domain/User';
+import  Email   from '../vendor/smtp-3.0.0';
 
 interface PropValues {
     messageWarehouse: MessageWarehouse;
@@ -46,9 +47,31 @@ class Footer extends React.Component<PropValues, {}> {
                             onChange={(e) => this.fileSelected(e.target.files)}
                             ref={this.inputImageRef}
                         />
+                        <button 
+                                type="button" 
+                                className="button"
+                                onClick={this.sendEmailButtonClicked}
+                        >
+                            Send Email
+                        </button>
                     </div>
                 </div>
             </footer>
+        );
+    }
+
+    sendEmailButtonClicked() {
+
+        Email.send({
+            Host : 'smtp.elasticemail.com',
+            Username : 'sdkuker@gmail.com',
+            Password : '0F106EE11CECF6DBCA89AB352CE8844A9731',
+            To : 'sdkuker@comcast.net',
+            From : 'sdkuker@gmail.com',
+            Subject : 'XX posted something',
+            Body : 'It was posted at: XX'
+        }).then(
+            message => alert('email sent')
         );
     }
 

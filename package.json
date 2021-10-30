@@ -5,14 +5,14 @@
   "homepage": "http://www.stevieware.com/messenger",
   "dependencies": {
     "@types/react-modal": "^3.2.0",
-    "bootstrap": "^4.1.1",
+    "bootstrap": "^4.3.1",
     "firebase": "^5.2.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
     "popper.js": "^1.14.3",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.4.2",
     "react-modal": "^3.5.1",
     "react-scripts-ts": "2.16.0"
   },

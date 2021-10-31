@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
+import { UserWarehouse } from '../domain/UserWarehouse';
 import { Message } from '../domain/Message';
 import { User } from '../domain/User';
 import  Email   from '../vendor/smtp-3.0.0';
@@ -7,6 +8,7 @@ import  Email   from '../vendor/smtp-3.0.0';
 interface PropValues {
     messageWarehouse: MessageWarehouse;
     loggedInUser: User;
+    userWarehouse: UserWarehouse;
 }
 
 class Footer extends React.Component<PropValues, {}> {
@@ -47,31 +49,43 @@ class Footer extends React.Component<PropValues, {}> {
                             onChange={(e) => this.fileSelected(e.target.files)}
                             ref={this.inputImageRef}
                         />
-                        <button 
-                                type="button" 
-                                className="button"
-                                onClick={this.sendEmailButtonClicked}
-                        >
-                            Send Email
-                        </button>
+                        <input 
+                            type="button"
+                            value="Send E-Mail"
+                            onClick={this.sendEmailButtonClicked}
+                        />
                     </div>
                 </div>
             </footer>
         );
     }
 
-    sendEmailButtonClicked() {
+    sendEmailButtonClicked = () => {
+
+        const currentDate = new Date();
+        let recipientUser = this.props.userWarehouse.partnerUser;
+        let recipientUserEmailAddress = 'sdkuker@stevieware.com';
+        if (recipientUser) {
+            if (recipientUser.emailAddress) {
+                recipientUserEmailAddress = recipientUser.emailAddress;
+            }
+        }
+
+        let senderEmailAddress = 'sdkuker@stevieware.com';
+        if (this.props.loggedInUser.emailAddress) {
+            senderEmailAddress = this.props.loggedInUser.emailAddress;
+        }
 
         Email.send({
             Host : 'smtp.elasticemail.com',
             Username : 'sdkuker@gmail.com',
             Password : '0F106EE11CECF6DBCA89AB352CE8844A9731',
-            To : 'sdkuker@comcast.net',
-            From : 'sdkuker@gmail.com',
-            Subject : 'XX posted something',
-            Body : 'It was posted at: XX'
+            To : recipientUserEmailAddress,
+            From : senderEmailAddress,
+            Subject : this.props.loggedInUser.name + ' posted something on Stevieware Messenger',
+            Body : 'It was posted on: ' + currentDate.toLocaleDateString() + ' at: ' + currentDate.toLocaleTimeString()
         }).then(
-            message => alert('email sent')
+            message => alert('email sent from: ' + senderEmailAddress + ' to: ' + recipientUserEmailAddress)
         );
     }
 

@@ -4,8 +4,9 @@ export class User {
     name: string;
     password: string | null;
     category: string;
+    emailAddress: string;
 
-    constructor(anId: string | null, aName: string | null, aPassword: string | null, aCategory: string | null) {
+    constructor(anId: string | null, aName: string | null, aPassword: string | null, aCategory: string | null, anEmailAddress: string | null) {
         if (anId) {
             this.id = anId;
         } 
@@ -17,6 +18,9 @@ export class User {
         }
         if (aCategory) {
             this.category = aCategory;
+        }
+        if (anEmailAddress) {
+            this.emailAddress = anEmailAddress;
         }
     }
 }

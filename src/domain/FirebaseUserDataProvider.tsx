@@ -28,7 +28,8 @@ export class FirebaseUserDataProvider implements UserDataProvider {
                     var myUser = new User(  childSnapshot.key,
                                             childSnapshot.val().name,
                                             null,
-                                            childSnapshot.val().category);
+                                            childSnapshot.val().category,
+                                            childSnapshot.val().emailAddress);
                     theReturn.push(myUser);
                 }
             });
@@ -39,15 +40,15 @@ export class FirebaseUserDataProvider implements UserDataProvider {
 
     // tslint:disable-next-line
     userAddedFromDatabase = (data: any) => {
-        this.users.push(new User(data.key, data.val().name, data.val().password, data.val().category));
+        this.users.push(new User(data.key, data.val().name, data.val().password, data.val().category, data.val().emailAddress));
     }
 
     getUserForId = async (id: string) => {
-        let myUser = new User('Placeholder', 'Placeholder', null, '999');
+        let myUser = new User('Placeholder', 'Placeholder', null, '999', null);
         let myQuery = this.database.ref('users').orderByKey().equalTo(id);
         await myQuery.once('value').then(function (snapshot: firebase.database.DataSnapshot) {
             snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
-                myUser = new User(childSnapshot.key, childSnapshot.val().name, null, childSnapshot.val().category);
+                myUser = new User(childSnapshot.key, childSnapshot.val().name, null, childSnapshot.val().category, childSnapshot.val().emailAddress);
             });
         });
         return myUser;

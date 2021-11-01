@@ -33,27 +33,33 @@ class Footer extends React.Component<PropValues, {}> {
             <footer className="footer">
                 <div className="container">
                     <div className="form-group">
-                        <input
-                            type="text"
-                            name="myInput"
-                            defaultValue={this.defaultMessage}
-                            onBlur={this.messageLeft}
-                            onFocus={this.messageEntered}
-                            onKeyUp={this.enterClicked}
-                            className="form-control"
-                            ref={this.inputTextRef}
-                        />
-                        <input
-                            type="file"
-                            name="myFileInput"
-                            onChange={(e) => this.fileSelected(e.target.files)}
-                            ref={this.inputImageRef}
-                        />
-                        <input 
-                            type="button"
-                            value="Send E-Mail"
-                            onClick={this.sendEmailButtonClicked}
-                        />
+                            <input
+                                type="text"
+                                name="myInput"
+                                defaultValue={this.defaultMessage}
+                                onBlur={this.messageLeft}
+                                onFocus={this.messageEntered}
+                                onKeyUp={this.enterClicked}
+                                className="form-control"
+                                ref={this.inputTextRef}
+                            />
+                            <div className="form-control">
+                                <div>
+                                    <input
+                                        type="file"
+                                        name="myFileInput"
+                                        onChange={(e) => this.fileSelected(e.target.files)}
+                                        ref={this.inputImageRef}
+                                        className="btn-sm"
+                                    />
+                                    <input 
+                                        type="button"
+                                        value="Send E-Mail"
+                                        onClick={this.sendEmailButtonClicked}
+                                        className="btn-sm"
+                                    />
+                                </div>
+                            </div>
                     </div>
                 </div>
             </footer>

@@ -85,13 +85,14 @@ class Footer extends React.Component<PropValues, {}> {
         Email.send({
             Host : 'smtp.elasticemail.com',
             Username : 'sdkuker@gmail.com',
-            Password : '0F106EE11CECF6DBCA89AB352CE8844A9731',
+            Password : 'F1E47DFF4A2E19A9702C8AB3C3EC08116FF6',
             To : recipientUserEmailAddress,
             From : senderEmailAddress,
             Subject : this.props.loggedInUser.name + ' posted something on Stevieware Messenger',
             Body : 'It was posted on: ' + currentDate.toLocaleDateString() + ' at: ' + currentDate.toLocaleTimeString()
         }).then(
-            message => alert('email sent from: ' + senderEmailAddress + ' to: ' + recipientUserEmailAddress)
+            message => alert('email sent from: ' + senderEmailAddress + ' to: ' + recipientUserEmailAddress + 
+                             ' with return message: ' + message)
         );
     }
 

@@ -8,13 +8,14 @@ export class FirebaseUserDataProvider implements UserDataProvider {
     @observable users = Array<User>();
     database: firebase.database.Database;
     usersReference: firebase.database.Reference;
-    idPasswordsReference: firebase.database.Reference;
+    idLoginAttemptsReference: firebase.database.Reference;
 
     constructor() {
         this.userAddedFromDatabase = this.userAddedFromDatabase.bind(this);
         this.database = firebase.database();
         this.usersReference = this.database.ref('users');
         this.usersReference.on('child_added', this.userAddedFromDatabase);
+        this.idLoginAttemptsReference = this.database.ref('id-loginAttempts');
     }
 
     getUsersForUserOfCategory = async (aUser: User) => {
@@ -70,5 +71,19 @@ export class FirebaseUserDataProvider implements UserDataProvider {
             });
         });
         return isValidLogin;
+    }
+
+    recordLoginAttempt = async (aUserId: string, aPassword: string, isValid: boolean) => {
+        let recordSuccessful = true;
+
+        const newLoginAttemptRef = this.idLoginAttemptsReference.push();
+        // tslint:disable-next-line
+        await newLoginAttemptRef.set({ userId: aUserId, password: aPassword, wasSuccessfull: isValid, attemptDateTime: new Date().toLocaleString() }, function (error: any) {
+            if (error) {
+                recordSuccessful = false;
+            }
+        });
+
+        return recordSuccessful;
     }
 }

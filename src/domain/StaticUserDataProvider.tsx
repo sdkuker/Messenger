@@ -55,4 +55,11 @@ export class StaticUserDataProvider implements UserDataProvider {
 
         return isValidLogin;
     }
+
+    recordLoginAttempt = async (aUserId: string, aPassword: string, isValid: boolean)  => {
+
+        let theReturn = true;
+
+        return theReturn;
+    }
 }

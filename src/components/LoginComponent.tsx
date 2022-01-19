@@ -104,6 +104,7 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
 
         try {
             let validID = await this.props.userWarehouse.validateLogin(this.userId, this.password);
+            this.props.userWarehouse.recordLoginAttempt(this.userId, this.password, validID);
             if (validID) {
                 let loggedInUserSetupSuccessful = await this.props.userWarehouse.setLoggedInUser(this.userId);
                 if (loggedInUserSetupSuccessful) {

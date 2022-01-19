@@ -15,6 +15,17 @@ export class UserWarehouse {
         this.dataProvider = mydataProvider;
     }
 
+    recordLoginAttempt = async (id: string, password: string, isValid: boolean) => {
+
+        try {
+            await this.dataProvider.recordLoginAttempt(id, password, isValid);
+        } catch (error) {
+            // eslint-disable-next-line
+            alert('got an error recording the login attempt: ' + error);
+
+        }
+    }
+
     setLoggedInUser = async (id: string) => {
 
         let successfulLogin = false;

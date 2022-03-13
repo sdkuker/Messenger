@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://www.stevieware.com/messenger",
   "dependencies": {
+    "@aws-sdk/client-sns": "^3.54.0",
     "@types/react-modal": "^3.2.0",
     "bootstrap": "^4.3.1",
     "firebase": "^5.2.0",

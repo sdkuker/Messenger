@@ -8,12 +8,14 @@ import { MessageWarehouse } from '../domain/MessageWarehouse';
 import Nav from './Nav';
 import { observer } from 'mobx-react';
 import { UserWarehouse } from '../domain/UserWarehouse';
+import { AwsSMSWarehouse } from '../domain/AwsSMSWarehouse';
 
 @observer
 class App extends React.Component {
 
   myMessageWarehouse: MessageWarehouse;
   myUserWarehouse: UserWarehouse;
+  myAwsSMSWarehouse: AwsSMSWarehouse;
 
   constructor() {
     super({});
@@ -22,6 +24,7 @@ class App extends React.Component {
     // this.myMessageWarehouse = new MessageWarehouse(new StaticMessageDataProvider(null));
     this.myMessageWarehouse =
       new MessageWarehouse(new FirebaseMessageDataProvider('messages/'));
+    this.myAwsSMSWarehouse = new AwsSMSWarehouse(this.myUserWarehouse);
   }
 
   public render() {
@@ -42,6 +45,7 @@ class App extends React.Component {
                 messageWarehouse={this.myMessageWarehouse} 
                 loggedInUser={this.myUserWarehouse.loggedInUser}
                 userWarehouse={this.myUserWarehouse}
+                awsSMSWarehouse={this.myAwsSMSWarehouse}
               />));
     } else {
       myHtml.push((

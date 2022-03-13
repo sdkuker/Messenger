@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
 import { UserWarehouse } from '../domain/UserWarehouse';
+import { AwsSMSWarehouse } from '../domain/AwsSMSWarehouse';
 import { Message } from '../domain/Message';
 import { User } from '../domain/User';
 import  Email   from '../vendor/smtp-3.0.0';
@@ -9,6 +10,7 @@ interface PropValues {
     messageWarehouse: MessageWarehouse;
     loggedInUser: User;
     userWarehouse: UserWarehouse;
+    awsSMSWarehouse: AwsSMSWarehouse;
 }
 
 class Footer extends React.Component<PropValues, {}> {

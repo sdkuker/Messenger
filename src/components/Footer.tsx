@@ -201,6 +201,8 @@ class Footer extends React.Component<PropValues, {}> {
                         null,
                         null);
                     this.props.messageWarehouse.add(myMessage);
+                    // this.props.awsSMSWarehouse.send(myMessage, this.props.userWarehouse.partnerUser.phoneNumber);
+                    this.props.awsSMSWarehouse.send(myMessage, '+16512692904');
                     this.inputTextRef.current.value = '';
                 }
             }

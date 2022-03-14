@@ -17,24 +17,28 @@ export class AwsSMSWarehouse {
     }
 
     // if it's time, send the sms message.  Phone number in format +1aaabbcccc.
-    send = async (aMessage: Message, recipientPhoneNumber: string) => {
+    send = async (aMessage: Message, recipientPhoneNumber: string | null) => {
 
         let sentStatus = 'unknown';
         const currentTime = new Date();
 
         if (this.isItTimeToSendMessage(this.timeLastSMSSent, currentTime, this.milliSecondsToWaitBetweenSMSMessageSends)) {
-            try {
-                const myInput : PublishCommandInput = {Message: aMessage.text, PhoneNumber: recipientPhoneNumber};
-                const myCommand = new PublishCommand(myInput);
-                const dataReturned = await this.mySNSClient.send(myCommand);
-                sentStatus = 'sent';
-                this.timeLastSMSSent = currentTime;
-            } catch(error) {
-                sentStatus = 'notSent-failed';
-                console.log ('error is: ' + error);
-            } 
+            if (recipientPhoneNumber) {
+                try {
+                    const myInput : PublishCommandInput = {Message: aMessage.text, PhoneNumber: recipientPhoneNumber};
+                    const myCommand = new PublishCommand(myInput);
+                    const dataReturned = await this.mySNSClient.send(myCommand);
+                    sentStatus = 'sent';
+                    this.timeLastSMSSent = currentTime;
+                } catch(error) {
+                    sentStatus = 'notSent-failed';
+                    console.log ('error is: ' + error);
+                } 
+            } else {
+                sentStatus = 'notSent-noRecipientPhoneNumber';
+            }
         } else {
-            sentStatus = 'notSent-tooSoon';
+                sentStatus = 'notSent-tooSoon';
         }
 
         return sentStatus;
@@ -47,7 +51,7 @@ export class AwsSMSWarehouse {
         if (timeLastMessageWasSent) {
             // @ts-ignore
             const timeFromLastMessageSend = currentTime.valueOf() - timeLastMessageWasSent.valueOf();
-            console.log('currentTime: ' + currentTime.valueOf() + ' timeLastMessageWasSent: ' + timeLastMessageWasSent.valueOf());
+           // console.log('currentTime: ' + currentTime.valueOf() + ' timeLastMessageWasSent: ' + timeLastMessageWasSent.valueOf());
             if (timeFromLastMessageSend >= millisBetweenMessageSends) {
                 itIsTime = true;
             } else {

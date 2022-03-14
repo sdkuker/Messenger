@@ -7,6 +7,10 @@ it ('Successfully send text to my cell - sent another too soon so it does not se
 
     const myMessage = new Message('aKey', 'aSender', 'message text', 'aType', null, null, new Date());
 
+    let noRecipientPhoneNumber = await myWarehouse.send(myMessage, null);
+
+    expect (noRecipientPhoneNumber).toEqual('notSent-noRecipientPhoneNumber');
+
     let sentSuccessfully  = await myWarehouse.send(myMessage, '+16512692904');
 
     expect (sentSuccessfully).toEqual('sent');
@@ -47,3 +51,4 @@ it ('isItTimeToSendMessage - second message send - waited long enough', async ()
     expect (isItTime).toBeTruthy();
 
 })
+

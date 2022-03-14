@@ -1,11 +1,11 @@
-import { SNSClient, PublishCommand, PublishCommandInput, SNSClientResolvedConfig, SNSClientConfig, PublishCommandOutput} from '@aws-sdk/client-sns';
+import { SNSClient, PublishCommand, PublishCommandInput, SNSClientConfig} from '@aws-sdk/client-sns';
 import { Message } from './Message';
 
 export class AwsSMSWarehouse {
 
     // 5 mins = 5 * 60 * 1,000
     milliSecondsToWaitBetweenSMSMessageSends = 300000;
-    timeLastSMSSent: Date;
+    timeLastSMSSent: Date | null;
     mySNSClient: SNSClient;
 
     constructor(awsAccessKeyId: string, awsSecretAccessKay: string) {
@@ -13,7 +13,7 @@ export class AwsSMSWarehouse {
         const myConfig : SNSClientConfig = {region: 'us-east-1', credentials: myCredentials}
        // const myConfig : SNSClientResolvedConfig = {accessKeyId: '1', secretAccessKey: '2', region: 'us-east-1'};
         this.mySNSClient = new SNSClient(myConfig)
-        this.timeLastSMSSent
+        this.timeLastSMSSent = null;
     }
 
     // if it's time, send the sms message.  Phone number in format +1aaabbcccc.
@@ -25,9 +25,9 @@ export class AwsSMSWarehouse {
         if (this.isItTimeToSendMessage(this.timeLastSMSSent, currentTime, this.milliSecondsToWaitBetweenSMSMessageSends)) {
             if (recipientPhoneNumber) {
                 try {
-                    const myInput : PublishCommandInput = {Message: aMessage.text, PhoneNumber: recipientPhoneNumber};
+                    const myInput : PublishCommandInput = {Message: 'Messsage sent', PhoneNumber: recipientPhoneNumber};
                     const myCommand = new PublishCommand(myInput);
-                    const dataReturned = await this.mySNSClient.send(myCommand);
+                    await this.mySNSClient.send(myCommand);
                     sentStatus = 'sent';
                     this.timeLastSMSSent = currentTime;
                 } catch(error) {

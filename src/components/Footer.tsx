@@ -119,6 +119,7 @@ class Footer extends React.Component<PropValues, {}> {
                 var maxWidth = 300;
                 var maxHeight = 225;
                 var reader = new FileReader();
+                // eslint-disable-next-line no-loop-func
                 reader.onload = function () {
                     var originalImage = new Image();
                     originalImage.addEventListener('load', function () {

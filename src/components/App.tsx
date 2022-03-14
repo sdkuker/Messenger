@@ -9,6 +9,9 @@ import Nav from './Nav';
 import { observer } from 'mobx-react';
 import { UserWarehouse } from '../domain/UserWarehouse';
 import { AwsSMSWarehouse } from '../domain/AwsSMSWarehouse';
+// @ts-ignore
+import  snsConfigObject from '../snsConfig.json';
+
 
 @observer
 class App extends React.Component {
@@ -24,7 +27,7 @@ class App extends React.Component {
     // this.myMessageWarehouse = new MessageWarehouse(new StaticMessageDataProvider(null));
     this.myMessageWarehouse =
       new MessageWarehouse(new FirebaseMessageDataProvider('messages/'));
-    this.myAwsSMSWarehouse = new AwsSMSWarehouse(this.myUserWarehouse);
+    this.myAwsSMSWarehouse = new AwsSMSWarehouse(snsConfigObject.accessKey, snsConfigObject.secretAccessKey);
   }
 
   public render() {

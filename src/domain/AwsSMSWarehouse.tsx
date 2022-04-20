@@ -1,6 +1,11 @@
 import { SNSClient, PublishCommand, PublishCommandInput, SNSClientConfig} from '@aws-sdk/client-sns';
 import { Message } from './Message';
 
+export enum smsEvent {
+    Login = "LOGIN",
+    EntryAdded = "ENTRY-ADDED"
+}
+
 export class AwsSMSWarehouse {
 
     // 5 mins = 5 * 60 * 1,000
@@ -16,20 +21,24 @@ export class AwsSMSWarehouse {
         this.timeLastSMSSent = null;
     }
 
-    // if it's time, send the sms message.  Phone number in format +1aaabbcccc.
-    send = async (aMessage: Message, recipientPhoneNumber: string | null) => {
+    // always send login messages.  if it's entry-added and if it's time, send the sms message.  
+    // Phone number in format +1aaabbcccc.
+    send = async (anEvent: smsEvent, recipientPhoneNumber: string | null) => {
 
         let sentStatus = 'unknown';
         const currentTime = new Date();
 
-        if (this.isItTimeToSendMessage(this.timeLastSMSSent, currentTime, this.milliSecondsToWaitBetweenSMSMessageSends)) {
+        if (smsEvent.Login == anEvent || 
+            this.isItTimeToSendMessage(this.timeLastSMSSent, currentTime, this.milliSecondsToWaitBetweenSMSMessageSends)) {
             if (recipientPhoneNumber) {
                 try {
-                    const myInput : PublishCommandInput = {Message: 'Messsage sent', PhoneNumber: recipientPhoneNumber};
+                    const myInput : PublishCommandInput = {Message: anEvent.valueOf(), PhoneNumber: recipientPhoneNumber};
                     const myCommand = new PublishCommand(myInput);
                     await this.mySNSClient.send(myCommand);
                     sentStatus = 'sent';
-                    this.timeLastSMSSent = currentTime;
+                    if (smsEvent.EntryAdded == anEvent) {
+                         this.timeLastSMSSent = currentTime;
+                    }
                 } catch(error) {
                     sentStatus = 'notSent-failed';
                     console.log ('error is: ' + error);

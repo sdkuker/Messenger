@@ -57,7 +57,10 @@ class App extends React.Component {
               conversationPartnerChanged={this.conversationPartnerChanged} 
               numberOfMessagesToDisplay={this.numberOfMessagesToDisplay}
             />));
-      myHtml.push(<LoginComponent userWarehouse={this.myUserWarehouse} messageWarehouse={this.myMessageWarehouse}/>);
+      myHtml.push(<LoginComponent userWarehouse={this.myUserWarehouse} 
+                    messageWarehouse={this.myMessageWarehouse}
+                    awsSMSWarehouse={this.myAwsSMSWarehouse}
+                  />);
     }
     return (
       <div>

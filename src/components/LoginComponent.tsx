@@ -3,10 +3,12 @@ import * as Modal from 'react-modal';
 import { observer } from 'mobx-react';
 import { UserWarehouse } from '../domain/UserWarehouse';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
+import { AwsSMSWarehouse, smsEvent} from '../domain/AwsSMSWarehouse';
 
 interface PropValues {
     userWarehouse: UserWarehouse;
     messageWarehouse: MessageWarehouse;
+    awsSMSWarehouse: AwsSMSWarehouse;
 }
 
 interface StateValues {
@@ -104,12 +106,15 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
 
         try {
             let validID = await this.props.userWarehouse.validateLogin(this.userId, this.password);
-            this.props.userWarehouse.recordLoginAttempt(this.userId, this.password, validID);
+            await this.props.userWarehouse.recordLoginAttempt(this.userId, this.password, validID);
             if (validID) {
                 let loggedInUserSetupSuccessful = await this.props.userWarehouse.setLoggedInUser(this.userId);
                 if (loggedInUserSetupSuccessful) {
                     this.props.messageWarehouse.conversationPartnerChanged(this.props.userWarehouse.conversation);
                     this.props.messageWarehouse.numberOfMessagesToDisplay('last50');
+                    if (this.props.userWarehouse.loggedInUser.notifyAdminUponLogin) {
+                        await this.props.awsSMSWarehouse.send(smsEvent.Login, '+16512692904');
+                    }
                 } else {
                     this.setState({ isModalOpen: true });
                 }

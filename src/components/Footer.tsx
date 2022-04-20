@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
 import { UserWarehouse } from '../domain/UserWarehouse';
-import { AwsSMSWarehouse } from '../domain/AwsSMSWarehouse';
+import { AwsSMSWarehouse, smsEvent } from '../domain/AwsSMSWarehouse';
 import { Message } from '../domain/Message';
 import { User } from '../domain/User';
 import  Email   from '../vendor/smtp-3.0.0';
@@ -189,7 +189,7 @@ class Footer extends React.Component<PropValues, {}> {
     /*
     * only send the message when enter is clicked
     */
-    enterClicked(event: React.KeyboardEvent<HTMLInputElement>) {
+    async enterClicked(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.keyCode === 13) {
             if (event.currentTarget.value) {
                 if (event.currentTarget.value !== this.defaultMessage) {
@@ -201,10 +201,11 @@ class Footer extends React.Component<PropValues, {}> {
                         null,
                         null,
                         null);
-                    this.props.messageWarehouse.add(myMessage);
-                    // this.props.awsSMSWarehouse.send(myMessage, this.props.userWarehouse.partnerUser.phoneNumber);
-                    this.props.awsSMSWarehouse.send(myMessage, '+16512692904');
+                    await this.props.messageWarehouse.add(myMessage);
                     this.inputTextRef.current.value = '';
+                    if (this.props.userWarehouse.loggedInUser.nofifyConversationParterOfUpdate) {
+                        await this.props.awsSMSWarehouse.send(smsEvent.EntryAdded, this.props.userWarehouse.partnerUser.phoneNumber);
+                    }
                 }
             }
         }

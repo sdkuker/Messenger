@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
 import { UserWarehouse } from '../domain/UserWarehouse';
+import { AwsSMSWarehouse } from '../domain/AwsSMSWarehouse';
 import { Message } from '../domain/Message';
 import { User } from '../domain/User';
 import  Email   from '../vendor/smtp-3.0.0';
@@ -9,6 +10,7 @@ interface PropValues {
     messageWarehouse: MessageWarehouse;
     loggedInUser: User;
     userWarehouse: UserWarehouse;
+    awsSMSWarehouse: AwsSMSWarehouse;
 }
 
 class Footer extends React.Component<PropValues, {}> {
@@ -117,6 +119,7 @@ class Footer extends React.Component<PropValues, {}> {
                 var maxWidth = 300;
                 var maxHeight = 225;
                 var reader = new FileReader();
+                // eslint-disable-next-line no-loop-func
                 reader.onload = function () {
                     var originalImage = new Image();
                     originalImage.addEventListener('load', function () {
@@ -199,6 +202,8 @@ class Footer extends React.Component<PropValues, {}> {
                         null,
                         null);
                     this.props.messageWarehouse.add(myMessage);
+                    // this.props.awsSMSWarehouse.send(myMessage, this.props.userWarehouse.partnerUser.phoneNumber);
+                    this.props.awsSMSWarehouse.send(myMessage, '+16512692904');
                     this.inputTextRef.current.value = '';
                 }
             }

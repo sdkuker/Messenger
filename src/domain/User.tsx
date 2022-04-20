@@ -5,8 +5,9 @@ export class User {
     password: string | null;
     category: string;
     emailAddress: string;
+    phoneNumber: string | null;
 
-    constructor(anId: string | null, aName: string | null, aPassword: string | null, aCategory: string | null, anEmailAddress: string | null) {
+    constructor(anId: string | null, aName: string | null, aPassword: string | null, aCategory: string | null, anEmailAddress: string | null, aPhoneNumber: string | null) {
         if (anId) {
             this.id = anId;
         } 
@@ -21,6 +22,9 @@ export class User {
         }
         if (anEmailAddress) {
             this.emailAddress = anEmailAddress;
+        }
+        if (aPhoneNumber) {
+            this.phoneNumber = aPhoneNumber;
         }
     }
 }

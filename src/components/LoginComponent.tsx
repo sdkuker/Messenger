@@ -122,6 +122,7 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
                 this.setState({ isModalOpen: true });
             }
         } catch (error) {
+            console.log(error);
             this.setState({ isModalOpen: true });
         }
     }

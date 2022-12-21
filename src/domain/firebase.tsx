@@ -1,4 +1,5 @@
-import * as firebase from 'firebase/app';
+import { initializeApp} from 'firebase/app';
+import { getDatabase } from 'firebase/database';
 import 'firebase/auth';
 import 'firebase/database';
 
@@ -10,6 +11,7 @@ const config = {
     storageBucket: 'steviewaremessenger.appspot.com',
     messagingSenderId: '212286266725'
 };
-firebase.initializeApp(config);
+const app = initializeApp(config);
+const messengerDatabase = getDatabase(app);
 
-export default firebase;
+export default messengerDatabase;

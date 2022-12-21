@@ -1,4 +1,5 @@
-import firebase from './firebase';
+import messengerDatabase from './firebase';
+import { Database, DatabaseReference, ref, onValue, query, get, push, set, orderByChild, DataSnapshot, equalTo, orderByKey, onChildAdded, limitToLast, Query } from 'firebase/database';
 import { MessageDataProvider } from './MessageDataProvider';
 import { Conversation } from './Conversation';
 import { Message } from './Message';
@@ -7,9 +8,10 @@ import { observable } from 'mobx';
 export class FirebaseMessageDataProvider implements MessageDataProvider {
 
     @observable messages = Array<Message>();
-    database: firebase.database.Database;
-    allMessagesReference: firebase.database.Reference;
-    last50MessagesReference: firebase.database.Reference;
+    database: Database;
+    allMessagesRef: DatabaseReference;
+    allMessagesQuery: Query;
+    last50MessagesQuery: Query;
     conversation: Conversation;
     basePath: string;
     np: string;
@@ -19,20 +21,21 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
     messagesRetrievedForConversation: boolean;
 
     constructor(path: string) {
-        this.database = firebase.database();
+        this.database = messengerDatabase;
         this.basePath = path;
         this.messagesRetrievedForConversation = false;
     }
     add = (aMessage: Message) => {
-        const newPostRef = this.allMessagesReference.push();
+
+        const newMessageRef = push(this.allMessagesRef);
         // tslint:disable-next-line
-        newPostRef.set({ sender: aMessage.sender, text: aMessage.text, type: aMessage.type, width: aMessage.width, height: aMessage.height, creationDate: aMessage.creationDate.toJSON() }, function (error: any) {
-            // if (error) {
-            //     console.log('the set failed');
-            // } else {
-            //     console.log('the set succeeded');
-            // }
-        });
+        set(newMessageRef, {
+            sender: aMessage.sender, text: aMessage.text, type: aMessage.type, width: aMessage.width, height: aMessage.height, creationDate: aMessage.creationDate.toJSON() }, 
+        );
+        // const newPostRef = this.allMessagesReference.push();
+        // // tslint:disable-next-line
+        // newPostRef.set({ sender: aMessage.sender, text: aMessage.text, type: aMessage.type, width: aMessage.width, height: aMessage.height, creationDate: aMessage.creationDate.toJSON() }, function (error: any) {
+        // });
     }
 
     setConversation = (aConversation: Conversation) => {
@@ -68,11 +71,16 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
             let baseQuery = this.basePath + this.conversation.key();
             if (this.numberOfMessagesToDisplayDescription === 'last50') {
                 // @ts-ignore
-                this.last50MessagesReference = this.database.ref(baseQuery).limitToLast(50);
-                this.last50MessagesReference.on('child_added', this.last50MessageAddedToDatabase);
+                //this.last50MessagesReference = this.database.ref(baseQuery).limitToLast(50);
+                this.last50MessagesQuery = query(ref(this.database, baseQuery), limitToLast(50));
+                onChildAdded(this.last50MessagesQuery, this.last50MessageAddedToDatabase)
+                //this.last50MessagesReference.on('child_added', this.last50MessageAddedToDatabase);
             }
-            this.allMessagesReference = this.database.ref(baseQuery);
-            this.allMessagesReference.on('child_added', this.allMessageAddedToDatabase);
+           // this.allMessagesReference = this.database.ref(baseQuery);
+           // this.allMessagesReference.on('child_added', this.allMessageAddedToDatabase);
+           this.allMessagesRef = ref(this.database, baseQuery);
+           this.allMessagesQuery = query(ref(this.database, baseQuery));
+            onChildAdded(this.allMessagesQuery, this.allMessageAddedToDatabase)
         }
     }
 

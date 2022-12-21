@@ -1,17 +1,24 @@
 import { User } from './User';
 import { UserDataProvider } from './UserDataProvider';
-import { computed, observable } from 'mobx';
+import { computed, observable, makeObservable } from 'mobx';
 import { Conversation } from './Conversation';
 
 export class UserWarehouse {
 
     dataProvider: UserDataProvider;
-    @observable loggedInUser: User;
-    @observable partnerUser: User;
-    @observable conversation: Conversation;
-    @observable users = new Array<User>();
+    loggedInUser: User;
+    partnerUser: User;
+    conversation: Conversation;
+    users = new Array<User>();
 
     constructor(mydataProvider: UserDataProvider) {
+        makeObservable(this, {
+            loggedInUser: observable,
+            partnerUser: observable,
+            conversation: observable,
+            users: observable
+        });
+
         this.dataProvider = mydataProvider;
     }
 

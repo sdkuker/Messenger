@@ -1,13 +1,17 @@
 import { MessageDataProvider } from './MessageDataProvider';
 import { Message } from './Message';
 import { Conversation } from './Conversation';
-import { observable } from 'mobx';
+import { observable, makeObservable } from 'mobx';
 
 export class StaticMessageDataProvider implements MessageDataProvider {
 
-    @observable messages: Array<Message>;
+    messages: Array<Message>;
 
     constructor(myMessages: Array<Message> | null) {
+        makeObservable(this, {
+            messages: observable
+        });
+
         if (myMessages) {
             this.messages = myMessages;
         } else {

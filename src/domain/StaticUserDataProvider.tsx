@@ -1,12 +1,16 @@
 import { UserDataProvider } from './UserDataProvider';
 import { User } from './User';
-import { observable, computed } from 'mobx';
+import { observable, computed, makeObservable } from 'mobx';
 
 export class StaticUserDataProvider implements UserDataProvider {
 
-    @observable users: Array<User>;
+    users: Array<User>;
 
     constructor(myUsers: Array<User> | null) {
+        makeObservable(this, {
+            users: observable
+        });
+
         if (myUsers) {
             this.users = myUsers;
         } else {

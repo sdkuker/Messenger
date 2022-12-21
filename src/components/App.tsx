@@ -13,7 +13,6 @@ import { AwsSMSWarehouse } from '../domain/AwsSMSWarehouse';
 import  snsConfigObject from '../snsConfig.json';
 
 
-@observer
 class App extends React.Component {
 
   myMessageWarehouse: MessageWarehouse;
@@ -79,4 +78,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default observer(App);

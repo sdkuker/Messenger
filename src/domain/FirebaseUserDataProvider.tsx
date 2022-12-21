@@ -2,16 +2,20 @@ import messengerDatabase from './firebase';
 import { Database, DatabaseReference, ref, onValue, query, get, push, set, orderByChild, DataSnapshot, equalTo, orderByKey } from 'firebase/database';
 import { UserDataProvider } from './UserDataProvider';
 import { User } from './User';
-import { observable } from 'mobx';
+import { observable, makeObservable } from 'mobx';
 
 export class FirebaseUserDataProvider implements UserDataProvider {
 
-    @observable users = Array<User>();
+    users = Array<User>();
     database: Database;
     usersReference: DatabaseReference;
     idLoginAttemptsReference: DatabaseReference;
 
     constructor() {
+        makeObservable(this, {
+            users: observable
+        });
+
         this.userAddedFromDatabase = this.userAddedFromDatabase.bind(this);
         this.database = messengerDatabase;
         this.usersReference = ref(this.database, 'users');

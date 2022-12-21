@@ -1,19 +1,23 @@
 import { Message } from './Message';
 import { Conversation } from './Conversation';
 import { MessageDataProvider } from './MessageDataProvider';
-import { computed, observable } from 'mobx';
+import { computed, observable, makeObservable } from 'mobx';
 
 export class MessageWarehouse {
    
     dataProvider: MessageDataProvider;
 
-    @observable myConversation: Conversation;
+    myConversation: Conversation;
 
     constructor(mydataProvider: MessageDataProvider) {
+        makeObservable(this, {
+            myConversation: observable,
+            messages: computed
+        });
+
         this.dataProvider = mydataProvider;
     }
 
-    @computed
     get messages() {
         return this.dataProvider.messages;
     }

@@ -3,11 +3,11 @@ import { Database, DatabaseReference, ref, onValue, query, get, push, set, order
 import { MessageDataProvider } from './MessageDataProvider';
 import { Conversation } from './Conversation';
 import { Message } from './Message';
-import { observable } from 'mobx';
+import { observable, makeObservable } from 'mobx';
 
 export class FirebaseMessageDataProvider implements MessageDataProvider {
 
-    @observable messages = Array<Message>();
+    messages = Array<Message>();
     database: Database;
     allMessagesRef: DatabaseReference;
     allMessagesQuery: Query;
@@ -21,6 +21,10 @@ export class FirebaseMessageDataProvider implements MessageDataProvider {
     messagesRetrievedForConversation: boolean;
 
     constructor(path: string) {
+        makeObservable(this, {
+            messages: observable
+        });
+
         this.database = messengerDatabase;
         this.basePath = path;
         this.messagesRetrievedForConversation = false;

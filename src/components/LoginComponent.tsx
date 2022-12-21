@@ -15,7 +15,6 @@ interface StateValues {
     isModalOpen: boolean;
 }
 
-@observer
 class LoginComponent extends React.Component<PropValues, StateValues> {
 
     userId: string;
@@ -140,4 +139,4 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
     }
 }
 
-export default LoginComponent;
+export default observer(LoginComponent);

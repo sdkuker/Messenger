@@ -7,7 +7,6 @@ interface PropValues {
     messages: Array<Message>;
 }
 
-@observer
 class MessageList extends React.Component<PropValues, {}> {
 
     private messageListRef = React.createRef<HTMLDivElement>();
@@ -47,4 +46,4 @@ class MessageList extends React.Component<PropValues, {}> {
     }
 }
 
-export default MessageList;
+export default observer(MessageList);

@@ -14,7 +14,6 @@ interface StateValues {
   last50MessagesOnlySelected: boolean;
 }
 
-@observer
 class Nav extends React.Component<PropValues,  StateValues> {
 
   constructor(props: PropValues) {
@@ -112,4 +111,4 @@ class Nav extends React.Component<PropValues,  StateValues> {
   }
 }
 
-export default Nav;
+export default observer(Nav);

@@ -10,6 +10,9 @@
 /build
 /build.1
 
+# aws Keys
+/src/snsConfig.json
+
 # misc
 .DS_Store
 .env.local

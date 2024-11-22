@@ -8,8 +8,8 @@ export enum smsEvent {
 
 export class AwsSMSWarehouse {
 
-    // 5 mins = 5 * 60 * 1,000
-    milliSecondsToWaitBetweenSMSMessageSends = 300000;
+    // 10 mins = 1000 millis/sec * 60 sec/min * 10 min
+    milliSecondsToWaitBetweenSMSMessageSends = 1000 * 60 * 10;
     timeLastSMSSent: Date | null;
     mySNSClient: SNSClient;
 
@@ -34,7 +34,8 @@ export class AwsSMSWarehouse {
                 try {
                     const myInput : PublishCommandInput = {Message: anEvent.valueOf(), PhoneNumber: recipientPhoneNumber};
                     const myCommand = new PublishCommand(myInput);
-                    await this.mySNSClient.send(myCommand);
+                    let response =  await this.mySNSClient.send(myCommand);
+                    console.log(response);
                     sentStatus = 'sent';
                     if (smsEvent.EntryAdded == anEvent) {
                          this.timeLastSMSSent = currentTime;

@@ -72,22 +72,22 @@ class Footer extends React.Component<PropValues, {}> {
 
         const currentDate = new Date();
         let recipientUser = this.props.userWarehouse.partnerUser;
-        let recipientUserEmailAddress = 'sdkuker@stevieware.com';
+        let recipientUserEmailAddress = 'sdkuker@gmail.com';
         if (recipientUser) {
             if (recipientUser.emailAddress) {
                 recipientUserEmailAddress = recipientUser.emailAddress;
             }
         }
 
-        let senderEmailAddress = 'sdkuker@stevieware.com';
-        if (this.props.loggedInUser.emailAddress) {
-            senderEmailAddress = this.props.loggedInUser.emailAddress;
-        }
+        let senderEmailAddress = 'sdkuker@gmail.com';
+        // if (this.props.loggedInUser.emailAddress) {
+        //     senderEmailAddress = this.props.loggedInUser.emailAddress;
+        // }
 
         Email.send({
             Host : 'smtp.elasticemail.com',
             Username : 'sdkuker@gmail.com',
-            Password : 'F1E47DFF4A2E19A9702C8AB3C3EC08116FF6',
+            Password : 'E6269DE9F485AA7E5C10395E91A5A72C0C1F',
             To : recipientUserEmailAddress,
             From : senderEmailAddress,
             Subject : this.props.loggedInUser.name + ' posted something on Stevieware Messenger',

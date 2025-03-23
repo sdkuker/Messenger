@@ -49,8 +49,8 @@ class Nav extends React.Component<PropValues,  StateValues> {
     return (
       <header>
         <div>
-          <div className="bg-primary text-white">
-            <div className="d-flex ml-3 bg-primary text-white">
+          <div className="bg-primary text-white fixed-top">
+            <div className="d-flex ml-3 justify-content-center h3">
               <span>Messenger</span>
             </div>
             <div className="d-flex m-3">

@@ -29,8 +29,8 @@ class MessageList extends React.Component<PropValues, {}> {
         });
         
         return (
-            <div className="special-container" ref={this.messageListRef}>
-                <ul className="list-group">
+            <div  ref={this.messageListRef}>
+                <ul className="list-group ml-3">
                     {messageComponents}
                 </ul>
             </div>

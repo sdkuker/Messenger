@@ -5,7 +5,7 @@ import { FirebaseMessageDataProvider } from '../domain/FirebaseMessageDataProvid
 import LoginComponent from './LoginComponent';
 import MessageList from './MessageList';
 import { MessageWarehouse } from '../domain/MessageWarehouse';
-import Nav from './Nav';
+import Nav from './Header';
 import { observer } from 'mobx-react';
 import { UserWarehouse } from '../domain/UserWarehouse';
 import { AwsSMSWarehouse } from '../domain/AwsSMSWarehouse';

@@ -42,7 +42,7 @@ class LoginComponent extends React.Component<PropValues, StateValues> {
     public render() {
 
         return (
-            <div className="special-container">
+            <div className="special-container mt-5">
                 <div className="row">
                     <div>
                         <h1>Login</h1>

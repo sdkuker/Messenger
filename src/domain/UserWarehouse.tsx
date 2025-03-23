@@ -1,6 +1,6 @@
 import { User } from './User';
 import { UserDataProvider } from './UserDataProvider';
-import { computed, observable, makeObservable } from 'mobx';
+import { observable, makeObservable } from 'mobx';
 import { Conversation } from './Conversation';
 
 export class UserWarehouse {
@@ -8,6 +8,7 @@ export class UserWarehouse {
     dataProvider: UserDataProvider;
     loggedInUser: User;
     partnerUser: User;
+    partnerUserLastLoginDate: Date;
     conversation: Conversation;
     users = new Array<User>();
 
@@ -15,6 +16,7 @@ export class UserWarehouse {
         makeObservable(this, {
             loggedInUser: observable,
             partnerUser: observable,
+            partnerUserLastLoginDate: observable,
             conversation: observable,
             users: observable
         });

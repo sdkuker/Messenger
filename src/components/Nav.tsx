@@ -34,56 +34,58 @@ class Nav extends React.Component<PropValues,  StateValues> {
     // tslint:disable-next-line
     let partnerElements: any = [];
     let selectedUserName = '';
+    let selectedUserLastLoggedInDateElements: any = [];
 
     if (this.props.userWarehouse.loggedInUser) {
-      let myString = this.props.userWarehouse.loggedInUser.name + ' chatting with ';
-      loggedInUserElements.push(<div style={whiteFontStyle}>{myString}</div>);
+      let myString = this.props.userWarehouse.loggedInUser.name + ' chatting with: ';
+      loggedInUserElements.push(<span>{myString}</span>);
       this.props.userWarehouse.users.forEach((myUser: User) => {
         partnerElements.push(<option>{myUser.name}</option>);
       });
 
       if ( this.props.userWarehouse.partnerUser ) {
         selectedUserName = this.props.userWarehouse.partnerUser.name;
+        let lastLoggedInString = 'Last logged in: ' + this.props.userWarehouse.partnerUserLastLoginDate;
+        selectedUserLastLoggedInDateElements.push(<div className="ml-3">{lastLoggedInString}</div>);
       }
     }
 
     return (
-      <nav className="navbar navbar-expand-sm bg-primary navbar-dark fixed-top">
-        <span className="navbar-brand">Messenger</span>
-        {loggedInUserElements}
-        <select  
-            value={selectedUserName} 
-            className="form-control" 
-            id="partnerSelect" 
-            onChange={e => this.partnerSelected(e)}
-        >
-          {partnerElements}
-        </select>
-        <div className="radio">
-          <label style={whiteFontStyle}>
-            <input 
-              type="radio" 
-              value="last50MessagesRadioOption" 
-              checked={this.state.last50MessagesOnlySelected} 
-              onChange={e => this.handleRadioButonOptionChange(e)
-                       }
-            />
-            Last 50 Messages Only
-            </label>
+      <header>
+        <div>
+          <div>
+            <div className="d-flex m-3">
+              <span>Messenger</span>
+            </div>
+            <div className="d-flex m-3">
+              {loggedInUserElements}
+              <select
+                className="ml-1"
+                value={selectedUserName}
+                id="partnerSelect"
+                onChange={e => this.partnerSelected(e)}
+              >
+                {partnerElements}
+              </select>
+              {selectedUserLastLoggedInDateElements}
+              <div className="form-check form-check-inline">
+                <label className="form-check-label ml-5" htmlFor="last50Radio">Last 50 Messages Only</label>
+                <input className="form-check-input ml-2" type="radio" id="last50Radio" value="last50MessagesRadioOption"
+                  checked={this.state.last50MessagesOnlySelected}
+                  onChange={e => this.handleRadioButonOptionChange(e)}
+                />
+              </div>
+              <div className="form-check form-check-inline">
+                <label className="form-check-label ml-3" htmlFor="allRadio">All Messages</label>
+                <input className="form-check-input ml-2" type="radio" id="allRadio" value="allMessagesRadioOption"
+                  checked={!this.state.last50MessagesOnlySelected}
+                  onChange={e => this.handleRadioButonOptionChange(e)}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="radio">
-          <label style={whiteFontStyle}>
-            <input 
-              type="radio" 
-              value="allMessagesRadioOption" 
-              checked={! this.state.last50MessagesOnlySelected} 
-              onChange={e => this.handleRadioButonOptionChange(e)
-                       }
-            />
-            All Messages
-            </label>
-        </div>
-      </nav>
+      </header>
     );
   }
 

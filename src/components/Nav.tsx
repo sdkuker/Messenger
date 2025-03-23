@@ -25,10 +25,6 @@ class Nav extends React.Component<PropValues,  StateValues> {
 
   public render() {
 
-    var whiteFontStyle = {
-      color: 'white'
-    };
-
     // tslint:disable-next-line
     let loggedInUserElements: any = [];
     // tslint:disable-next-line
@@ -53,8 +49,8 @@ class Nav extends React.Component<PropValues,  StateValues> {
     return (
       <header>
         <div>
-          <div>
-            <div className="d-flex m-3">
+          <div className="bg-primary text-white">
+            <div className="d-flex ml-3 bg-primary text-white">
               <span>Messenger</span>
             </div>
             <div className="d-flex m-3">

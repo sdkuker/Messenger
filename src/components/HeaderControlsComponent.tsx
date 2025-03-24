@@ -41,7 +41,14 @@ class HeaderControlsComponent extends React.Component<PropValues, StateValues> {
 
             if (this.props.userWarehouse.partnerUser) {
                 selectedUserName = this.props.userWarehouse.partnerUser.name;
-                let lastLoggedInString = 'Last logged in: ' + this.props.userWarehouse.partnerUserLastLoginDate;
+                let lastLoggedInString = 'Last logged in: ';
+                if (this.props.userWarehouse.partnerUserLastLoginDate) {
+                    lastLoggedInString = lastLoggedInString.concat(this.props.userWarehouse.partnerUserLastLoginDate.toLocaleDateString());
+                    lastLoggedInString = lastLoggedInString.concat(' : ');
+                    lastLoggedInString = lastLoggedInString.concat(this.props.userWarehouse.partnerUserLastLoginDate.toLocaleTimeString());
+                } else {
+                    lastLoggedInString = lastLoggedInString.concat('Never');
+                }
                 selectedUserLastLoggedInDateElements.push(<div className="ml-3">{lastLoggedInString}</div>);
             }
         }

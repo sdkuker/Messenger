@@ -8,7 +8,7 @@ export class UserWarehouse {
     dataProvider: UserDataProvider;
     loggedInUser: User;
     partnerUser: User;
-    partnerUserLastLoginDate: Date;
+    partnerUserLastLoginDate: Date | null;
     conversation: Conversation;
     users = new Array<User>();
 
@@ -50,6 +50,7 @@ export class UserWarehouse {
             } else {
                 this.conversation = new Conversation(this.loggedInUser, null);
             }
+            await this.retrieveMostRecentLoginAttemptDateForPartnerUser();
         } catch (error) {
             // eslint-disable-next-line
             alert('got an error setting the logged in user: ' + error);
@@ -66,9 +67,9 @@ export class UserWarehouse {
         }
     }
 
-    setConversationPartner = (partnerName: string) => {
+    setConversationPartner = async (partnerName: string) => {
 
-        this.users.forEach((myUser: User) => {
+        for (const myUser of this.users) {
             if (partnerName === myUser.name) {
                 this.partnerUser = myUser;
                 if (this.conversation) {
@@ -76,12 +77,20 @@ export class UserWarehouse {
                 } else {
                     this.conversation = new Conversation(this.loggedInUser, this.partnerUser);
                 }
+                await this.retrieveMostRecentLoginAttemptDateForPartnerUser();
+                break;
             }
-        });
+        };
     }
 
     validateLogin = async (id: string, password: string) => {
         let isValid = await this.dataProvider.validateLogin(id, password);
         return isValid;
+    }
+
+    retrieveMostRecentLoginAttemptDateForPartnerUser = async () => {
+        if (this.partnerUser) {
+            this.partnerUserLastLoginDate =  await this.dataProvider.getMostRecentLoginAttemptDateForUser(this.partnerUser.id);
+        } 
     }
 }

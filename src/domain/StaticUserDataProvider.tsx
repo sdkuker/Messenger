@@ -66,4 +66,10 @@ export class StaticUserDataProvider implements UserDataProvider {
 
         return theReturn;
     }
+
+    getMostRecentLoginAttemptDateForUser = async (aUserId: string) => {
+        let theReturn = new Date();
+        theReturn.setDate(theReturn.getDate() - 1);
+        return theReturn;
+    }
 }

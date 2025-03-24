@@ -46,24 +46,6 @@ export class FirebaseUserDataProvider implements UserDataProvider {
                         theReturn.push(myUser);
                     }
                 });
-       // })
-        //let myQuery = this.usersReference.orderByChild('category').equalTo(aUser.category);
-        //
-        // await myQuery.once('value').then(function (snapshot: DataSnapshot) {
-        //     snapshot.forEach(function (childSnapshot: DataSnapshot) {
-        //         if (aUser.id !== childSnapshot.key) {
-        //             var myUser = new User(  childSnapshot.key,
-        //                                     childSnapshot.val().name,
-        //                                     null,
-        //                                     childSnapshot.val().category,
-        //                                     childSnapshot.val().emailAddress,
-        //                                     childSnapshot.val().phoneNumber,
-        //                                     childSnapshot.val().notifyAdminUponLogin,
-        //                                     childSnapshot.val().nofifyConversationParterOfUpdate);
-        //             theReturn.push(myUser);
-        //         }
-        //     });
-        // });
 
         return theReturn;
     }
@@ -86,14 +68,7 @@ export class FirebaseUserDataProvider implements UserDataProvider {
                     childSnapshot.val().nofifyConversationParterOfUpdate);
             });
         }
-        // let myQuery = this.database.ref('users').orderByKey().equalTo(id);
-        // await myQuery.once('value').then(function (snapshot: firebase.database.DataSnapshot) {
-        //     snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
-        //         myUser = new User(childSnapshot.key, childSnapshot.val().name, null, childSnapshot.val().category, 
-        //                 childSnapshot.val().emailAddress, childSnapshot.val().phoneNumber, childSnapshot.val().notifyAdminUponLogin,
-        //                 childSnapshot.val().nofifyConversationParterOfUpdate);
-        //     });
-        // });
+
         return myUser;
 
     }
@@ -110,36 +85,42 @@ export class FirebaseUserDataProvider implements UserDataProvider {
             });
         }
         return isValidLogin;
-        // let myQuery = this.database.ref('id-passwords').orderByChild('id-password').equalTo(id + '-' + password);
-        // await myQuery.once('value').then(function (snapshot: firebase.database.DataSnapshot) {
-        //     snapshot.forEach(function (childSnapshot: firebase.database.DataSnapshot) {
-        //         // as long as we find one we're good :)
-        //         isValidLogin = true;
-        //         // console.log('child snap key is Steve: ' + childSnapshot.key);
-        //         // childSnapshot.forEach(function(grandchildSnapshot: firebase.database.DataSnapshot) {
-        //         //     console.log('grandchild snapshot key is id-password: ' + grandchildSnapshot.key);
-        //         //     console.log('grandchild value is Steve-password: ' + grandchildSnapshot.val());
-        //         // });
-        //     });
-        // });
+
     }
 
     recordLoginAttempt = async (aUserId: string, aPassword: string, isValid: boolean) => {
         let recordSuccessful = true;
 
-        // const newLoginAttemptRef = this.idLoginAttemptsReference.push();
         const newLoginAttemptRef = push(this.idLoginAttemptsReference);
         // tslint:disable-next-line
         await set(newLoginAttemptRef, {
             userId: aUserId, password: aPassword, wasSuccessfull: isValid, attemptDateTime: new Date().toLocaleString() }, 
         );
-        
-        // await newLoginAttemptRef.set({ userId: aUserId, password: aPassword, wasSuccessfull: isValid, attemptDateTime: new Date().toLocaleString() }, function (error: any) {
-        //     if (error) {
-        //         recordSuccessful = false;
-        //     }
-        // });
 
         return recordSuccessful;
+    }
+
+    getMostRecentLoginAttemptDateForUser = async (aUserId: string) => {
+
+        let mostRecentLoginAttemptDate: Date | null = null;
+
+        let myQuery = query(ref(this.database, 'id-loginAttempts'), orderByChild('userId'), equalTo(aUserId));
+        const loginAttemptsSnapshot = await get(myQuery);
+        if (loginAttemptsSnapshot) {
+            loginAttemptsSnapshot.forEach((childSnapshot: DataSnapshot) => {
+                if (childSnapshot.val().attemptDateTime) {
+                    let currrentSnapshotDate = new Date(childSnapshot.val().attemptDateTime);
+                    if (mostRecentLoginAttemptDate !== null) {
+                        if (currrentSnapshotDate > mostRecentLoginAttemptDate) {
+                            mostRecentLoginAttemptDate = currrentSnapshotDate;
+                        }
+                    } else {
+                        mostRecentLoginAttemptDate = currrentSnapshotDate;
+                    }
+                }
+            })
+        }
+
+        return mostRecentLoginAttemptDate;
     }
 }

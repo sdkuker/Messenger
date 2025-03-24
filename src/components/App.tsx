@@ -68,8 +68,8 @@ class App extends React.Component {
     );
   }
 
-  conversationPartnerChanged = (partnerName: string) => {
-    this.myUserWarehouse.setConversationPartner(partnerName);
+  conversationPartnerChanged = async (partnerName: string) => {
+    await this.myUserWarehouse.setConversationPartner(partnerName);
     this.myMessageWarehouse.conversationPartnerChanged(this.myUserWarehouse.conversation);
   }
 

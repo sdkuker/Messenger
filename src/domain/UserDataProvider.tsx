@@ -6,4 +6,5 @@ export interface UserDataProvider {
      getUsersForUserOfCategory(aUser: User): Promise<Array<User>>;
      validateLogin(aUserID: string, aPassword: string): Promise<boolean>;
      recordLoginAttempt(aUserId: string, aPassword: string, isValid: boolean): Promise<boolean>;
+     getMostRecentLoginAttemptDateForUser(aUserId: string): Promise<Date | null>;
 } 
